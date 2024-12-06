@@ -43,6 +43,13 @@ public class DBManager extends SQLiteOpenHelper {
                     "contacto TEXT NOT NULL, fotos TEXT, descripcion TEXT, " +
                     "propietario_id INTEGER NOT NULL, FOREIGN KEY (propietario_id) REFERENCES TABLA_USUARIO (id_usuario) ON DELETE CASCADE) ;");
 
+            // Crear TABLA_FOTOS
+            db.execSQL("CREATE TABLE IF NOT EXISTS TABLA_FOTOS ("+
+                    "id_foto INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "vivenda_id INTEGER NOT NULL, " +
+                    "url_foto TEXT NOT NULL, " +
+                    "FOREIGN KEY(vivienda_id) REFERENCES TABLA_VIVIENDA (id_vivienda) ON DELETE CASCADE);");
+
             // Crear TABLA_COMENTARIO
             db.execSQL("CREATE TABLE IF NOT EXISTS TABLA_COMENTARIO (" +
                     "id_mensaje INTEGER PRIMARY KEY AUTOINCREMENT, " +

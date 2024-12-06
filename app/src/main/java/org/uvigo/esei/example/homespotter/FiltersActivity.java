@@ -12,7 +12,7 @@ public class FiltersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filters);
+        setContentView(R.layout.activity_messages);
         Button btnBackToHome = findViewById(R.id.btn_back_to_home);
         btnBackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
