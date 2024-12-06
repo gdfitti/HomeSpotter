@@ -4,12 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -38,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, FiltersActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_favourites) {
-                    startActivity(new Intent(MainActivity.this, NotificationsActivity.class));
+                    startActivity(new Intent(MainActivity.this, MessagesActivity.class));
                     return true;
                 }
 

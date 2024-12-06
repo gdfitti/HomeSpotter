@@ -35,7 +35,7 @@ public class FotosEntity {
         }catch (SQLException exc){
             Log.e("FotosEntity.insertar", "Error al insertar foto: " + exc.getMessage());
         }finally {
-            db.close();
+            db.endTransaction();
         }
         return toret;
     }

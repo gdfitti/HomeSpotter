@@ -12,24 +12,31 @@ import java.util.List;
 public class ViviendaEntity {
     private static SQLiteDatabase db;
     private static final String NOMBRE_TABLA = "TABLA_VIVIENDA";
+    private static final String COL_ID_VIVIENDA = "id_vivienda";
+    private static final String COL_TIPO = "tipo_vivienda";
+    private static final String COL_PRECIO = "precio";
+    private static final String COL_DIREC = "direccion";
+    private static final String COL_ESTADO = "estado";
+    private static final String COL_CONTACTO = "contacto";
+    private static final String COL_DESCR = "descripcion";
+    private static final String COL_PROP_ID = "propietario_id";
 
     public ViviendaEntity(SQLiteDatabase db){
         this.db = db;
     }
 
 
-    public boolean insertar(int id_vivienda, String tipoVivienda, double precio, String direccion, String estado, String contacto, String fotos, String descripcion, int propietarioId) {
+    public boolean insertar(int id_vivienda, String tipoVivienda, double precio, String direccion, String estado, String contacto, String descripcion, int propietarioId) {
         ContentValues values = new ContentValues();
         boolean toret = false;
 
-        values.put("tipo_vivienda", tipoVivienda);
-        values.put("precio", precio);
-        values.put("direccion", direccion);
-        values.put("estado", estado);
-        values.put("contacto", contacto);
-        values.put("fotos", fotos);
-        values.put("descripcion", descripcion);
-        values.put("propietario_id", propietarioId);
+        values.put(COL_TIPO, tipoVivienda);
+        values.put(COL_PRECIO, precio);
+        values.put(COL_DIREC, direccion);
+        values.put(COL_ESTADO, estado);
+        values.put(COL_CONTACTO, contacto);
+        values.put(COL_DESCR, descripcion);
+        values.put(COL_PROP_ID, propietarioId);
 
         try{
             db.beginTransaction();
@@ -47,18 +54,17 @@ public class ViviendaEntity {
     }
 
     //modificar Vivienda
-    public boolean modificarVivienda(int idVivienda, String nuevoTipo, Double nuevoPrecio, String nuevaDireccion, String nuevoEstado, String nuevoContacto, String nuevaDescripcion, String nuevaFoto) {
+    public boolean modificarVivienda(int idVivienda, String nuevoTipo, Double nuevoPrecio, String nuevaDireccion, String nuevoEstado, String nuevoContacto, String nuevaDescripcion) {
         ContentValues values = new ContentValues();
         boolean toret = false;
 
         // Solo agregamos al ContentValues los campos que no son null
-        if (nuevoTipo != null) values.put("tipo_vivienda", nuevoTipo);
-        if (nuevoPrecio != null) values.put("precio", nuevoPrecio);
-        if (nuevaDireccion != null) values.put("direccion", nuevaDireccion);
-        if (nuevoEstado != null) values.put("estado", nuevoEstado);
-        if (nuevoContacto != null) values.put("contacto", nuevoContacto);
-        if (nuevaFoto != null) values.put("fotos", nuevaFoto);
-        if (nuevaDescripcion != null) values.put("descripcion", nuevaDescripcion);
+        if (nuevoTipo != null) values.put(COL_TIPO, nuevoTipo);
+        if (nuevoPrecio != null) values.put(COL_PRECIO, nuevoPrecio);
+        if (nuevaDireccion != null) values.put(COL_DIREC, nuevaDireccion);
+        if (nuevoEstado != null) values.put(COL_ESTADO, nuevoEstado);
+        if (nuevoContacto != null) values.put(COL_CONTACTO, nuevoContacto);
+        if (nuevaDescripcion != null) values.put(COL_DESCR, nuevaDescripcion);
 
 
         try {
@@ -68,7 +74,7 @@ public class ViviendaEntity {
             int filasAfectadas = db.update(
                     NOMBRE_TABLA,
                     values,
-                    "id_vivienda = ?",
+                    COL_ID_VIVIENDA + " = ?",
                     new String[]{String.valueOf(idVivienda)}
             );
 
@@ -121,7 +127,7 @@ public class ViviendaEntity {
         return db.query(
                 NOMBRE_TABLA,
                 null,
-                "id_vivienda = ?",
+                COL_ID_VIVIENDA + " = ?",
                 new String[]{String.valueOf(id_vivienda)},
                 null,
                 null,
@@ -151,14 +157,14 @@ public class ViviendaEntity {
             }
 
             if (precioMin != null && precioMax != null) {
-                whereClause.append("precio BETWEEN ? AND ?");
+                whereClause.append(COL_PRECIO + " BETWEEN ? AND ?");
                 whereArgs.add(String.valueOf(precioMin));
                 whereArgs.add(String.valueOf(precioMax));
             } else if (precioMin != null) {
-                whereClause.append("precio >= ?");
+                whereClause.append(COL_PRECIO + " >= ?");
                 whereArgs.add(String.valueOf(precioMin));
             } else if (precioMax != null) {
-                whereClause.append("precio <= ?");
+                whereClause.append(COL_PRECIO + " <= ?");
                 whereArgs.add(String.valueOf(precioMax));
             }
         }

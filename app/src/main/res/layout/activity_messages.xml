@@ -13,27 +13,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Filtrar búsqueda"
+            android:text="Mensajes"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/filter_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ubicación" />
-
-        <EditText
-            android:id="@+id/filter_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Rango de precios" />
-
-        <EditText
-            android:id="@+id/filter_bedrooms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Número de habitaciones" />
 
         <Button
             android:id="@+id/btn_back_to_home"

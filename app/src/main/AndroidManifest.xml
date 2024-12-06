@@ -26,7 +26,7 @@
         <activity android:name=".PropertyListActivity" />
         <activity android:name=".FiltersActivity" />
         <activity android:name=".AddPropertyActivity" />
-        <activity android:name=".NotificationsActivity" />
+        <activity android:name=".MessagesActivity" />
     </application>
 
 </manifest>

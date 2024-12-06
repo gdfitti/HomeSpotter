@@ -12,6 +12,10 @@ import java.util.List;
 public class UsuarioEntity{
     private static SQLiteDatabase db;
     private static final String NOMBRE_TABLA = "TABLA_USUARIO";
+    private static final String COL_ID_USUARIO = "id_usuario";
+    private static final String COL_EMAIL = "email";
+    private static final String COL_NOMBRE_USUARIO = "nombre_usuario";
+    private static final String COL_PASSWRD = "password";
 
     public enum insertUsuarioEstado{
         USUARIO_EXISTENTE,
@@ -24,6 +28,10 @@ public class UsuarioEntity{
     }
 
     public insertUsuarioEstado insertar(ContentValues values) {
+        if (values.getAsString(COL_NOMBRE_USUARIO) == null || values.getAsString(COL_EMAIL) == null || values.getAsString(COL_PASSWRD) == null) {
+            Log.e("UsuarioEntity", "Los campos obligatorios no pueden ser nulos.");
+            return insertUsuarioEstado.ERROR; // Devuelve ERROR si algún campo obligatorio es nulo
+        }
         Cursor cursor = null;
         insertUsuarioEstado estado = null;
 
