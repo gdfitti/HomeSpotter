@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">HomeSpotter</string>
+    <string name="properties_title">Viviendas</string>
+    <string name="apply_filters">Aplicar Filtros</string>
+    <string name="add_property">Añadir Propiedad</string>
+    <string name="filters">Filtros</string>
+    <string name="type_of_property">Tipo de Propiedad</string>
+    <string name="price_range">Rango de Precios</string>
+    <string name="min_price">Mínimo</string>
+    <string name="max_price">Máximo</string>
+    <string name="property_status">Estado</string>
+    <string name="back">Volver Atrás</string>
+    <string name="price">Precio</string>
+    <string name="enter_price">Introduce el precio</string>
+    <string name="address">Dirección</string>
+    <string name="enter_address">Introduce la dirección</string>
+    <string name="description">Descripción</string>
+    <string name="enter_description">Introduce una descripción</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="property_image_desc">Vista previa de la propiedad</string>
+    <string name="add_to_favorites">Añadir a favoritos</string>
+
+    <string-array name="tipos_vivienda">
+        <item>Casa</item>
+        <item>Apartamento</item>
+        <item>Estudio</item>
+        <item>Dúplex</item>
+    </string-array>
+
+    <string-array name="estados_vivienda">
+        <item>Disponible</item>
+        <item>Ocupado</item>
+        <item>Reformando</item>
+    </string-array>
+
 </resources>

@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.uvigo.esei.example.homespotter.vivienda.PropertyActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -28,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_properties) {
-                    startActivity(new Intent(MainActivity.this, PropertyListActivity.class));
+                    startActivity(new Intent(MainActivity.this, PropertyActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_messages) {
-                    startActivity(new Intent(MainActivity.this, FiltersActivity.class));
+                    startActivity(new Intent(MainActivity.this, MessagesActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_favourites) {
                     startActivity(new Intent(MainActivity.this, MessagesActivity.class));
