@@ -1,4 +1,4 @@
-package org.uvigo.esei.example.homespotter;
+package org.uvigo.esei.example.homespotter.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.uvigo.esei.example.homespotter.vivienda.PropertyActivity;
+import org.uvigo.esei.example.homespotter.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_properties) {
-                    startActivity(new Intent(MainActivity.this, PropertyActivity.class));
+                    startActivity(new Intent(MainActivity.this, ViviendaActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_messages) {
                     startActivity(new Intent(MainActivity.this, MessagesActivity.class));

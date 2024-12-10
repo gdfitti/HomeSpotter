@@ -17,7 +17,8 @@
         android:theme="@style/Theme.HomeSpotter"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.SplashActivity"
+            android:theme="@style/Theme.App.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,10 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".vivienda.PropertyActivity" />
-        <activity android:name=".MessagesActivity" />
-        <activity android:name=".FavouritesActivity" />
+        <activity android:name=".ui.activities.ProfileActivity" />
+        <activity android:name=".ui.activities.ViviendaActivity" />
+        <activity android:name=".ui.activities.MessagesActivity" />
+        <activity android:name=".ui.activities.FavouritesActivity" />
+        <activity android:name=".ui.activities.ViviendaDetailActivity" />
+        <activity android:name=".ui.activities.MainActivity" />
 
     </application>
 

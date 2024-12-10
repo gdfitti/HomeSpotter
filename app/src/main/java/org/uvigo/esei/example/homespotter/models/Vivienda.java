@@ -1,4 +1,4 @@
-package org.uvigo.esei.example.homespotter.vivienda;
+package org.uvigo.esei.example.homespotter.models;
 
 import java.util.List;
 
@@ -12,10 +12,11 @@ public class Vivienda {
     private String contacto;
     private String descripcion;
     private int propietarioId;
+    private boolean favorite;
     private List<String> fotos; // URL de la imagen
 
     // Constructor completo
-    public Vivienda(int id, String titulo, String tipoVivienda, double precio, String direccion, String estado, String contacto, String descripcion, int propietarioId, List<String> fotos) {
+    public Vivienda(int id, String titulo, String tipoVivienda, double precio, String direccion, String estado, String contacto, String descripcion, int propietarioId, boolean favorite, List<String> fotos) {
         this.id = id;
         this.titulo = titulo;
         this.tipoVivienda = tipoVivienda;
@@ -25,6 +26,7 @@ public class Vivienda {
         this.contacto = contacto;
         this.descripcion = descripcion;
         this.propietarioId = propietarioId;
+        this.favorite = favorite;
         this.fotos = fotos;
     }
 
@@ -112,6 +114,14 @@ public class Vivienda {
 
     public void setPropietarioId(int propietarioId) {
         this.propietarioId = propietarioId;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     public List<String> getFotos() {

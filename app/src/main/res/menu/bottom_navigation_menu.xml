@@ -10,7 +10,7 @@
         android:title="Mensajes" />
     <item
         android:id="@+id/nav_favourites"
-        android:icon="@drawable/ic_favourites"
+        android:icon="@drawable/ic_favorites"
         android:title="Favoritos" />
     <item
         android:id="@+id/nav_profile"

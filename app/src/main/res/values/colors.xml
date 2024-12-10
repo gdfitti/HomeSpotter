@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="teal_700">#00796B</color>
     <color name="teal_200">#80CBC4</color>
+    <color name="secondary_text">#E91E63</color>
+    <color name="primary">#00796B</color>
+    <color name="splash_background_color">#E33077</color>
+    <color name="splash_background">#00E33077</color>
 </resources>

@@ -5,14 +5,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Contenedor dinámico para los fragmentos -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+    <!-- Contenedor desplazable -->
 
     <!-- Menú inferior -->
+    <ScrollView
+        android:id="@+id/scroll_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="16dp">
+
+            <!-- Título de la app -->
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏡 HomeSpotter"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="24dp"
+                android:gravity="center" />
+
+            <!-- Descripción corta -->
+            <TextView
+                android:id="@+id/short_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Encuentra tu hogar ideal de manera rápida y sencilla."
+                android:textSize="18sp"
+                android:textColor="@color/secondary_text"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Separador decorativo -->
+            <View
+                android:layout_width="60dp"
+                android:layout_height="4dp"
+                android:background="@color/primary"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Descripción extendida -->
+            <TextView
+                android:id="@+id/extended_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Con HomeSpotter, explorar, comparar y elegir la vivienda perfecta nunca había sido tan fácil. Nuestra plataforma te permite acceder a las mejores propiedades disponibles y gestionarlas según tus preferencias. ¡Comienza tu viaje hacia el hogar ideal hoy mismo!"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:lineSpacingExtra="4dp"
+                android:gravity="center"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Texto motivacional -->
+            <TextView
+                android:id="@+id/motivational_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✨ ¡Descubre el lugar donde tus sueños cobran vida! ✨"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:textColor="@color/primary"
+                android:gravity="center"
+                android:layout_marginBottom="32dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
