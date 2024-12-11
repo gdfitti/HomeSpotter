@@ -27,16 +27,16 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if (itemId == R.id.nav_profile) {
-                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                    startActivity(new Intent(MainActivity.this, PerfilActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_properties) {
                     startActivity(new Intent(MainActivity.this, ViviendaActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_messages) {
-                    startActivity(new Intent(MainActivity.this, MessagesActivity.class));
+                    startActivity(new Intent(MainActivity.this, MensajesActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_favourites) {
-                    startActivity(new Intent(MainActivity.this, MessagesActivity.class));
+                    startActivity(new Intent(MainActivity.this, MensajesActivity.class));
                     return true;
                 }
 

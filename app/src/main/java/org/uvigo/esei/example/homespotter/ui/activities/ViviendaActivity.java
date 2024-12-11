@@ -26,7 +26,7 @@ public class ViviendaActivity extends AppCompatActivity {
     private FavoritosEntity favoritosEntity;
     private List<Vivienda> propertyList;
     private ViviendaAdapter adapter;
-    private int idUsuario = 0;
+    private int idUsuario = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

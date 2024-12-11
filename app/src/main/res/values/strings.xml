@@ -21,6 +21,7 @@
     <string name="property_image_desc">Vista previa de la propiedad</string>
     <string name="add_to_favorites">Añadir a favoritos</string>
     <string name="app_logo">HomeSpotter</string>
+    <string name="owner_photo">Dueño</string>
 
     <string-array name="tipos_vivienda">
         <item>Casa</item>

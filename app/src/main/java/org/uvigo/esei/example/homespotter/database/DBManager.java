@@ -120,7 +120,7 @@ public class DBManager extends SQLiteOpenHelper {
             values.put("nombre_usuario", "Propietario 1");
             values.put("email", "propietario1@example.com");
             values.put("password", "password1");
-            values.put("foto_perfil", "propietario1.jpg");
+            values.put("foto_perfil", "https://i.ibb.co/C5czCdt/Perfil1.jpg");
             values.put("tlfno", "123456789");
             db.insert("TABLA_USUARIO", null, values);
 
@@ -130,7 +130,7 @@ public class DBManager extends SQLiteOpenHelper {
             values.put("nombre_usuario", "Propietario 2");
             values.put("email", "propietario2@example.com");
             values.put("password", "password2");
-            values.put("foto_perfil", "propietario2.jpg");
+            values.put("foto_perfil", "https://i.ibb.co/y8r94f9/perfil0.webp");
             values.put("tlfno", "987654321");
             db.insert("TABLA_USUARIO", null, values);
 
@@ -139,7 +139,7 @@ public class DBManager extends SQLiteOpenHelper {
             values.put("nombre_usuario", "Manuel Fernández");
             values.put("email", "manu21@example.com");
             values.put("password", "password3");
-            values.put("foto_perfil", "https://ibb.co/ZdQG0L9");
+            values.put("foto_perfil", "https://i.ibb.co/7v3jqYh/john-krasinski.jpg");
             values.put("tlfno", "987654321");
             db.insert("TABLA_USUARIO", null, values);
             db.setTransactionSuccessful();
@@ -235,7 +235,8 @@ public class DBManager extends SQLiteOpenHelper {
         fotosEntity.insertar(4,"https://i.ibb.co/ZmPRpSn/Casa-Vigo-con-Vistas-al-Mar.jpg");
         fotosEntity.insertar(5,"https://i.ibb.co/Fhxyx5W/Apartamento-Pontevedra.png");
         fotosEntity.insertar(6,"https://i.ibb.co/7n02ZtS/Apartamento-Salamanca.png");
-        fotosEntity.insertar(7,"https://i.ibb.co/8xxwgyv/Apartamento.jpg");
+        fotosEntity.insertar(7,"https://i.ibb.co/Fgyn1Qw/vivienda0.jpg");
+        fotosEntity.insertar(7,"https://i.ibb.co/FxJq3HQ/454536807.jpg");
         fotosEntity.insertar(8,"https://i.ibb.co/8xxwgyv/Apartamento.jpg");
         fotosEntity.insertar(9,"https://i.ibb.co/8xxwgyv/Apartamento.jpg");
         fotosEntity.insertar(10,"https://i.ibb.co/8xxwgyv/Apartamento.jpg");

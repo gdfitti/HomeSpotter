@@ -15,6 +15,7 @@ public class UsuarioEntity{
     private static final String COL_ID_USUARIO = "id_usuario";
     private static final String COL_EMAIL = "email";
     private static final String COL_NOMBRE_USUARIO = "nombre_usuario";
+    private static final String COL_FOTO = "foto_perfil";
     private static final String COL_PASSWRD = "password";
 
     public enum insertUsuarioEstado{
