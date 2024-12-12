@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, ViviendaActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_messages) {
-                    startActivity(new Intent(MainActivity.this, MessagesActivity.class));
+                    startActivity(new Intent(MainActivity.this, MensajeActivity.class));
                     return true;
                 } else if (itemId == R.id.nav_favourites) {
-                    startActivity(new Intent(MainActivity.this, MessagesActivity.class));
+                    startActivity(new Intent(MainActivity.this, FavouritesActivity.class));
                     return true;
                 }
 
