@@ -48,6 +48,19 @@ public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.MensajeV
             textViewContenido.setText(mensaje.getContenido());
             textViewFecha.setText(mensaje.getFecha());
         }
+        // PARA CUANDO FUNCIONE LO DE USURIARIOS
+        //@Override
+        //public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+        //    Message message = messages.get(position);
+        //    holder.messageText.setText(message.getContent());
+        //
+        //    // Verifica si el mensaje es enviado por el usuario
+        //    if (message.getSenderId() == currentUserId) {
+        //        holder.messageLayout.setBackgroundColor(Color.GREEN); // Color verde para los mensajes enviados
+        //    } else {
+        //        holder.messageLayout.setBackgroundColor(Color.GRAY); // Color por defecto para los mensajes recibidos
+        //    }
+        //}
     }
 }
 

@@ -62,13 +62,13 @@ public class MensajeActivity extends AppCompatActivity {
         if (cursor != null) {
             mensajes.clear();
             while (cursor.moveToNext()) {
-                int idMensaje = cursor.getInt(cursor.getColumnIndexOrThrow("id_mensaje"));
-                int remitenteId = cursor.getInt(cursor.getColumnIndexOrThrow("remitenteId"));
-                int destinatarioId = cursor.getInt(cursor.getColumnIndexOrThrow("destinatarioId"));
+                int id_mensaje = cursor.getInt(cursor.getColumnIndexOrThrow("id_mensaje"));
+                int remitente_id = cursor.getInt(cursor.getColumnIndexOrThrow("remitente_id"));
+                int destinatario_id = cursor.getInt(cursor.getColumnIndexOrThrow("destinatario_id"));
                 String contenido = cursor.getString(cursor.getColumnIndexOrThrow("contenido"));
                 String fecha = cursor.getString(cursor.getColumnIndexOrThrow("fecha"));
                 boolean leido = cursor.getInt(cursor.getColumnIndexOrThrow("leido")) == 1;
-                mensajes.add(new Mensaje(idMensaje, remitenteId, destinatarioId, contenido, fecha, leido));
+                mensajes.add(new Mensaje(id_mensaje, remitente_id, destinatario_id, contenido, fecha, leido));
             }
             cursor.close();
             adapter.notifyDataSetChanged();
