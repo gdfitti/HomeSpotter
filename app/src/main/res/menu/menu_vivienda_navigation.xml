@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_all_properties"
+        android:icon="@drawable/ic_all_properties"
+        android:title="@string/search_properties" />
+    <item
+        android:id="@+id/menu_my_properties"
+        android:icon="@drawable/ic_my_properties"
+        android:title="@string/my_properties" />
+</menu>

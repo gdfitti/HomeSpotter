@@ -40,7 +40,7 @@
                 android:id="@+id/short_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Encuentra tu hogar ideal de manera rápida y sencilla."
+                android:text="@string/slogan"
                 android:textSize="18sp"
                 android:textColor="@color/secondary_text"
                 android:gravity="center"
@@ -58,7 +58,7 @@
                 android:id="@+id/extended_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Con HomeSpotter, explorar, comparar y elegir la vivienda perfecta nunca había sido tan fácil. Nuestra plataforma te permite acceder a las mejores propiedades disponibles y gestionarlas según tus preferencias. ¡Comienza tu viaje hacia el hogar ideal hoy mismo!"
+                android:text="@string/appDesc"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:lineSpacingExtra="4dp"
@@ -70,21 +70,18 @@
                 android:id="@+id/motivational_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✨ ¡Descubre el lugar donde tus sueños cobran vida! ✨"
+                android:text="@string/phrase"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 android:textColor="@color/primary"
                 android:gravity="center"
                 android:layout_marginBottom="32dp" />
-
+            <Button
+                android:id="@+id/btn_select_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_language" />
         </LinearLayout>
     </ScrollView>
 
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_navigation_menu"
-        app:labelVisibilityMode="labeled" />
 </LinearLayout>

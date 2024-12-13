@@ -1,108 +1,141 @@
 package org.uvigo.esei.example.homespotter.ui.activities;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.widget.ListView;
 
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.fragment.app.Fragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.uvigo.esei.example.homespotter.R;
-import org.uvigo.esei.example.homespotter.database.DBManager;
-import org.uvigo.esei.example.homespotter.database.FavoritosEntity;
-import org.uvigo.esei.example.homespotter.database.FotosEntity;
-import org.uvigo.esei.example.homespotter.database.ViviendaEntity;
-import org.uvigo.esei.example.homespotter.models.Vivienda;
-import org.uvigo.esei.example.homespotter.ui.adapters.ViviendaAdapter;
+import org.uvigo.esei.example.homespotter.ui.fragments.MisViviendasFragment;
+import org.uvigo.esei.example.homespotter.ui.fragments.ViviendasFragment;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class ViviendaActivity extends AppCompatActivity {
-
-    private ViviendaEntity viviendaEntity;
-    private FotosEntity fotosEntity;
-    private FavoritosEntity favoritosEntity;
-    private List<Vivienda> propertyList;
-    private ViviendaAdapter adapter;
+/**
+ * Clase ViviendaActivity
+ *
+ * Actividad principal que muestra una lista de viviendas disponibles en la aplicación HomeSpotter.
+ * Permite interactuar con las viviendas y muestra sus detalles, fotos y estado de favorito.
+ *
+ * Funcionalidades principales:
+ * - Mostrar una lista de viviendas obtenidas de la base de datos.
+ * - Indicar si una vivienda está marcada como favorita por el usuario.
+ * - Cargar fotos asociadas a cada vivienda.
+ * - Botón para agregar una nueva propiedad (pendiente de implementación).
+ *
+ * Dependencias:
+ * - Modelos: `Vivienda`.
+ * - Adaptadores: `ViviendaAdapter`.
+ * - Entidades: `ViviendaEntity`, `FotosEntity`, `FavoritosEntity`.
+ */
+public class ViviendaActivity extends BaseActivity {
     private int idUsuario = 1;
 
+    /**
+     * Método `onCreate`
+     * Configura la actividad al ser creada. Inicializa la base de datos, los adaptadores
+     * y los elementos de la interfaz gráfica.
+     *
+     * @param savedInstanceState Estado guardado de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_viviendas);
+        changeBottomNavigationIcon(R.id.nav_properties,R.drawable.ic_home_selected);
+        ActivityResultLauncher<Intent> addViviendaLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        // Encuentra el fragmento actual visible
+                        ViviendasFragment fragment = (ViviendasFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-        // Configurar la base de datos
-        viviendaEntity = new ViviendaEntity(DBManager.getInstance(this).getWritableDatabase());
-        fotosEntity = new FotosEntity(DBManager.getInstance(this).getWritableDatabase());
-        favoritosEntity = new FavoritosEntity(DBManager.getInstance(this).getWritableDatabase());
-
-        // Configurar el ListView
-        ListView listView = findViewById(R.id.property_list);
-        propertyList = new ArrayList<>();
-        adapter = new ViviendaAdapter(this, propertyList, DBManager.getInstance(this).getWritableDatabase(),idUsuario);
-        listView.setAdapter(adapter);
-
-        // Cargar datos desde la base de datos
-        cargarPropiedades();
+                        if (fragment != null) {
+                            fragment.cargarPropiedades(); // Llama al método para recargar la lista
+                        }
+                    }
+                }
+        );
 
         // Configurar botones flotantes
         findViewById(R.id.button_back).setOnClickListener(v -> finish());
         findViewById(R.id.button_add_property).setOnClickListener(v -> {
-            // Acción para añadir nueva propiedad
-
+            Intent intent = new Intent(ViviendaActivity.this, ViviendaAddActivity.class);
+            intent.putExtra("userId", idUsuario); // Pasa el ID del usuario
+            addViviendaLauncher.launch(intent);
         });
-    }
 
-    private void cargarPropiedades() {
-        propertyList.clear();
-        List<Integer> favoritos = favoritosEntity.obtenerFavoritosPorUsuario(idUsuario);
-        Cursor cursor = viviendaEntity.buscar(null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id_vivienda"));
-                String titulo = cursor.getString(cursor.getColumnIndexOrThrow("titulo"));
-                String tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo_vivienda"));
-                double precio = cursor.getDouble(cursor.getColumnIndexOrThrow("precio"));
-                String direccion = cursor.getString(cursor.getColumnIndexOrThrow("direccion"));
-                String estado = cursor.getString(cursor.getColumnIndexOrThrow("estado"));
-                String contacto = cursor.getString(cursor.getColumnIndexOrThrow("contacto"));
-                String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"));
-                int idPropietario = cursor.getInt(cursor.getColumnIndexOrThrow("propietario_id"));
-                boolean favorito = favoritos.contains(id);
-                // Crear una nueva lista de fotos para cada vivienda
-                List<String> fotos = new ArrayList<>();
-                Cursor fotosCursor = fotosEntity.obtenerFotosPorVivienda(id);
-                if (fotosCursor != null && fotosCursor.moveToFirst()) {
-                    do {
-                        fotos.add(fotosCursor.getString(fotosCursor.getColumnIndexOrThrow("url_foto")));
-                    } while (fotosCursor.moveToNext());
-                    fotosCursor.close();
-                }
+        // Configurar el BottomNavigationView
+        BottomNavigationView bottomNavigationView = findViewById(R.id.appbar_navigation);
 
-                // Crear un objeto Vivienda y agregarlo a la lista
-                propertyList.add(new Vivienda(id, titulo, tipo, precio, direccion, estado, contacto, descripcion, idPropietario, favorito, fotos));
-            } while (cursor.moveToNext());
-            cursor.close();
+        // Cargar la sección de "Viviendas" por defecto
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, ViviendasFragment.newInstance(idUsuario))
+                    .commit();
         }
 
-        // Notificar cambios al adaptador
-        adapter.notifyDataSetChanged();
+        // Configurar listener para el BottomNavigationView
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+
+            if (item.getItemId() == R.id.menu_all_properties) {
+                selectedFragment = ViviendasFragment.newInstance(idUsuario); // Fragmento para todas las viviendas
+
+            }else if(item.getItemId() == R.id.menu_my_properties){
+                selectedFragment = MisViviendasFragment.newInstance(idUsuario); // Fragmento para "Mis Viviendas"
+            }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .commit();
+            }
+
+            return true;
+        });
+
     }
 
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_viviendas;
+    }
+
+
+    /**
+     * Método `onActivityResult`
+     * Maneja los resultados de actividades lanzadas desde esta actividad. En este caso,
+     * recarga las propiedades si el resultado es exitoso.
+     *
+     * @param requestCode Código de solicitud.
+     * @param resultCode Código de resultado.
+     * @param data Intent con datos adicionales.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Recargar los datos desde la base de datos
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            boolean isFavoriteChanged = data.getBooleanExtra("isFavoriteChanged", false);
 
-            cargarPropiedades();
+            if (isFavoriteChanged) {
+                // Obtener el fragmento activo
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
-            // Notificar cambios al adaptador
-            adapter.notifyDataSetChanged();
+                if (currentFragment instanceof ViviendasFragment) {
+                    // Notificar al fragmento que recargue los datos
+                    ((ViviendasFragment) currentFragment).cargarPropiedades();
+                }
+            }
         }
     }
+
+
 
 }

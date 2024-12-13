@@ -1,39 +1,71 @@
 <resources>
-    <string name="app_name">HomeSpotter</string>
-    <string name="properties_title">Viviendas</string>
-    <string name="apply_filters">Aplicar Filtros</string>
-    <string name="add_property">Añadir Propiedad</string>
-    <string name="filters">Filtros</string>
-    <string name="type_of_property">Tipo de Propiedad</string>
-    <string name="price_range">Rango de Precios</string>
-    <string name="min_price">Mínimo</string>
-    <string name="max_price">Máximo</string>
-    <string name="property_status">Estado</string>
-    <string name="back">Volver Atrás</string>
-    <string name="price">Precio</string>
-    <string name="enter_price">Introduce el precio</string>
-    <string name="address">Dirección</string>
-    <string name="enter_address">Introduce la dirección</string>
-    <string name="description">Descripción</string>
-    <string name="enter_description">Introduce una descripción</string>
-    <string name="save">Guardar</string>
-    <string name="cancel">Cancelar</string>
-    <string name="property_image_desc">Vista previa de la propiedad</string>
-    <string name="add_to_favorites">Añadir a favoritos</string>
-    <string name="app_logo">HomeSpotter</string>
-    <string name="owner_photo">Dueño</string>
 
-    <string-array name="tipos_vivienda">
-        <item>Casa</item>
-        <item>Apartamento</item>
-        <item>Estudio</item>
-        <item>Dúplex</item>
+    <!-- activity_main -->
+    <string name="app_name">HomeSpotter</string>
+    <string name="slogan">Find your ideal home quickly and easily.</string>
+    <string name="appDesc">With HomeSpotter, exploring, comparing, and choosing the perfect property has never been easier.
+                           Our platform allows you to access the best available properties and manage them according to your preferences.
+                           Start your journey to your ideal home today!</string>
+    <string name="phrase">✨ Discover the place where your dreams come to life! ✨</string>
+
+    <!-- bottom_navigation_menu -->
+    <string name="property">Properties</string>
+    <string name="messages">Messages</string>
+    <string name="favorites">Favorites</string>
+    <string name="profile">Profile</string>
+    <string name="select_language">Change Language</string>
+
+    <!-- menu_vivienda_navigation -->
+    <string name="search_properties">Property Search</string>
+    <string name="my_properties">My Properties</string>
+
+    <!-- activity_vivienda_add -->
+    <string name="title">Title</string>
+    <string name="type">Property Type</string>
+    <string name="price">Price</string>
+    <string name="address">Address</string>
+    <string name="state">Property State</string>
+    <string name="contact">Contact</string>
+    <string name="description">Description</string>
+    <string name="addPhotos">Upload Photos</string>
+    <string name="upload">Upload</string>
+    <string name="back">Go Back</string>
+
+    <string name="properties_title">Properties</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="add_property">Add Property</string>
+    <string name="filters">Filters</string>
+    <string name="type_of_property">Property Type</string>
+    <string name="price_range">Price Range</string>
+    <string name="min_price">Minimum</string>
+    <string name="max_price">Maximum</string>
+    <string name="property_status">Status</string>
+
+    <string name="enter_price">Enter the price</string>
+    <string name="enter_address">Enter the address</string>
+
+    <string name="enter_description">Enter a description</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="property_image_desc">Property Preview</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="app_logo">HomeSpotter</string>
+    <string name="owner_photo">Owner</string>
+
+    <string-array name="property_types">
+        <item>House</item>
+        <item>Apartment</item>
+        <item>Studio</item>
+        <item>Duplex</item>
+        <item>Beach House</item>
     </string-array>
 
-    <string-array name="estados_vivienda">
-        <item>Disponible</item>
-        <item>Ocupado</item>
-        <item>Reformando</item>
+    <string-array name="property_state">
+        <item>Available</item>
+        <item>Occupied</item>
+        <item>Under Renovation</item>
+        <item>Excellent</item>
+        <item>Needs Renovation</item>
     </string-array>
 
 </resources>

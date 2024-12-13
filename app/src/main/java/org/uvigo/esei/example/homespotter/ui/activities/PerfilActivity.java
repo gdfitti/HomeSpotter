@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.uvigo.esei.example.homespotter.R;
 
-public class PerfilActivity extends AppCompatActivity {
+public class PerfilActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        changeBottomNavigationIcon(R.id.nav_profile,R.drawable.ic_profile_selected);
         Button btnBackToHome = findViewById(R.id.btn_back_to_home);
         btnBackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,5 +26,10 @@ public class PerfilActivity extends AppCompatActivity {
                 finish(); // Cierra la actividad actual
             }
         });
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_profile;
     }
 }

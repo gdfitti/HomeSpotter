@@ -1,63 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <!-- AppBar con título y botón de filtros -->
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="?attr/colorPrimary">
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/appbar_navigation"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:title="@string/properties_title"
-            android:titleTextColor="@android:color/white"
-            app:menu="@menu/filter_menu" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_vivienda_navigation" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Contenedor principal -->
-    <LinearLayout
+    <!-- Contenedor principal para fragmentos -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="8dp" />
 
-        <!-- ListView para propiedades -->
-        <ListView
-            android:id="@+id/property_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp" />
-    </LinearLayout>
-
-    <!-- Botón flotante para añadir nuevas propiedades -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:gravity="end">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="start|bottom"
             android:contentDescription="@string/back"
             android:src="@drawable/ic_back"
-            android:tint="@android:color/white"
-            app:backgroundTint="@android:color/darker_gray" />
+            android:layout_marginEnd="5dp"
+            android:tint="@android:color/darker_gray"
+            app:backgroundTint="@color/teal_200" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_add_property"
@@ -65,6 +47,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/add_property"
             android:src="@drawable/ic_add"
+            android:layout_marginEnd="10dp"
             android:tint="@android:color/white"
             app:backgroundTint="@color/teal_200" />
     </LinearLayout>

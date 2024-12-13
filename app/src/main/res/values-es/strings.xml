@@ -1,0 +1,73 @@
+<resources>
+
+    <!-- activity_main -->
+    <string name="app_name">HomeSpotter</string>
+    <string name="slogan">Encuentra tu hogar ideal de manera rápida y sencilla.</string>
+    <string name="appDesc">Con HomeSpotter, explorar, comparar y elegir la vivienda perfecta nunca había sido tan fácil.
+                           Nuestra plataforma te permite acceder a las mejores propiedades disponibles y gestionarlas según tus preferencias.
+                           ¡Comienza tu viaje hacia el hogar ideal hoy mismo!</string>
+    <string name="phrase">✨ ¡Descubre el lugar donde tus sueños cobran vida! ✨</string>
+
+    <!-- bottom_navigation_menu -->
+    <string name="property">Viviendas</string>
+    <string name="messages">Mensajes</string>
+    <string name="favorites">Favoritos</string>
+    <string name="profile">Perfil</string>
+    <string name="select_language">Cambiar Idioma</string>
+
+    <!-- menu_vivienda_navigation -->
+    <string name="search_properties">Buscador Viviendas</string>
+    <string name="my_properties">Mis Viviendas</string>
+
+    <!-- activity_vivienda_add -->
+    <string name="title">Título</string>
+    <string name="type">Tipo de Vivienda</string>
+    <string name="price">Precio</string>
+    <string name="address">Dirección</string>
+    <string name="state">Estado de la Vivienda</string>
+    <string name="contact">Contacto</string>
+    <string name="description">Descripción</string>
+    <string name="addPhotos">Subir Fotos</string>
+    <string name="upload">Subir</string>
+    <string name="back">Volver Atrás</string>
+
+    <string name="properties_title">Viviendas</string>
+    <string name="apply_filters">Aplicar Filtros</string>
+    <string name="add_property">Añadir Propiedad</string>
+    <string name="filters">Filtros</string>
+    <string name="type_of_property">Tipo de Propiedad</string>
+    <string name="price_range">Rango de Precios</string>
+    <string name="min_price">Mínimo</string>
+    <string name="max_price">Máximo</string>
+    <string name="property_status">Estado</string>
+
+
+    <string name="enter_price">Introduce el precio</string>
+    <string name="enter_address">Introduce la dirección</string>
+
+    <string name="enter_description">Introduce una descripción</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="property_image_desc">Vista previa de la propiedad</string>
+    <string name="add_to_favorites">Añadir a favoritos</string>
+    <string name="app_logo">HomeSpotter</string>
+    <string name="owner_photo">Dueño</string>
+
+
+    <string-array name="property_types">
+        <item>Casa</item>
+        <item>Apartamento</item>
+        <item>Estudio</item>
+        <item>Dúplex</item>
+        <item>Casa en la playa</item>
+    </string-array>
+
+    <string-array name="property_state">
+        <item>Disponible</item>
+        <item>Ocupado</item>
+        <item>Reformando</item>
+        <item>Excelente</item>
+        <item>Para Reformar</item>
+    </string-array>
+
+</resources>

@@ -8,22 +8,61 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/**
+ * Clase DBManager
+ *
+ * Esta clase extiende de SQLiteOpenHelper y actúa como gestor de base de datos
+ * para la aplicación HomeSpotter. Implementa el patrón Singleton para garantizar
+ * que solo exista una instancia de la base de datos durante la ejecución.
+ *
+ * Tablas creadas:
+ * - TABLA_USUARIO: Almacena información sobre los usuarios de la aplicación.
+ * - TABLA_VIVIENDA: Almacena propiedades inmobiliarias.
+ * - TABLA_FOTOS: Almacena URLs de fotos relacionadas con las propiedades.
+ * - TABLA_COMENTARIO: Almacena comentarios realizados en las propiedades.
+ * - TABLA_FAVORITOS: Relaciona usuarios con sus propiedades favoritas.
+ * - TABLA_MENSAJES: Almacena mensajes entre usuarios relacionados con propiedades.
+ *
+ * Métodos principales:
+ * - onCreate(SQLiteDatabase): Crea las tablas necesarias y datos iniciales.
+ * - onUpgrade(SQLiteDatabase, int, int): Actualiza la estructura de la base de datos.
+ * - insertarUsuariosPorDefecto(SQLiteDatabase): Inserta usuarios iniciales.
+ * - insertarPropiedadesPorDefecto(SQLiteDatabase): Inserta propiedades iniciales.
+ * - insertarFotos(SQLiteDatabase): Inserta fotos relacionadas con propiedades.
+ */
 public class DBManager extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "home_spotter.db";
     private static final int DATABASE_VERSION = 1;
 
     private static DBManager instance;
 
+    /**
+     * Constructor privado para implementar el patrón Singleton.
+     *
+     * @param c Contexto de la aplicación.
+     */
     private DBManager(Context c){
         super(c.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Método para obtener una instancia única de DBManager.
+     *
+     * @param c Contexto de la aplicación.
+     * @return Instancia de DBManager.
+     */
     public static synchronized DBManager getInstance(Context c){
         if (instance == null){
             instance = new DBManager(c);
         }
         return instance;
     }
+
+    /**
+     * Crea las tablas de la base de datos y datos iniciales.
+     *
+     * @param db Instancia de SQLiteDatabase.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i( "DBManager", "Creando BBDD " + DATABASE_NAME + " v" + DATABASE_VERSION);
@@ -32,14 +71,14 @@ public class DBManager extends SQLiteOpenHelper {
             // Crear TABLA_USUARIO
             db.execSQL("CREATE TABLE IF NOT EXISTS TABLA_USUARIO (" +
                     "id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "nombre_usuario TEXT NOT NULL, email TEXT UNIQUE NOT NULL, " +
-                    "password TEXT NOT NULL, foto_perfil TEXT, tlfno TEXT);");
+                    "nombre_completo TEXT NOT NULL, nombre_usuario TEXT NOT NULL, " +
+                    "email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, foto_perfil TEXT, tlfno TEXT);");
 
             // Crear TABLA_VIVIENDA
             db.execSQL("CREATE TABLE IF NOT EXISTS TABLA_VIVIENDA (" +
                     "id_vivienda INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "titulo TEXT NOT NULL, " +
-                    "tipo_vivienda TEXT NOT NULL, precio REAL NOT NULL, " +
+                    "tipo_vivienda TEXT NOT NULL , precio REAL NOT NULL, " +
                     "direccion TEXT NOT NULL, estado TEXT NOT NULL, " +
                     "contacto TEXT NOT NULL, descripcion TEXT, " +
                     "propietario_id INTEGER NOT NULL, FOREIGN KEY (propietario_id) REFERENCES TABLA_USUARIO (id_usuario) ON DELETE CASCADE) ;");
@@ -90,11 +129,24 @@ public class DBManager extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Configura la base de datos para habilitar claves foráneas.
+     *
+     * @param db Instancia de SQLiteDatabase.
+     */
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
     }
+
+    /**
+     * Actualiza la estructura de la base de datos al cambiar la versión.
+     *
+     * @param db Instancia de SQLiteDatabase.
+     * @param v1 Versión antigua de la base de datos.
+     * @param v2 Versión nueva de la base de datos.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int v1, int v2) {
         Log.i("DBManager", "Actualizando BBDD de la versión " + v1 + " a " + v2);
@@ -111,6 +163,11 @@ public class DBManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Inserta usuarios iniciales en la base de datos.
+     *
+     * @param db Instancia de SQLiteDatabase.
+     */
     private void insertarUsuariosPorDefecto(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
 
@@ -118,6 +175,7 @@ public class DBManager extends SQLiteOpenHelper {
             db.beginTransaction();
             // Usuario 1
             values.put("nombre_usuario", "Propietario 1");
+            values.put("nombre_completo", "Rodrigo España");
             values.put("email", "propietario1@example.com");
             values.put("password", "password1");
             values.put("foto_perfil", "https://i.ibb.co/C5czCdt/Perfil1.jpg");
@@ -128,6 +186,7 @@ public class DBManager extends SQLiteOpenHelper {
             // Usuario 2
             values.clear();
             values.put("nombre_usuario", "Propietario 2");
+            values.put("nombre_completo", "Martin Carreño");
             values.put("email", "propietario2@example.com");
             values.put("password", "password2");
             values.put("foto_perfil", "https://i.ibb.co/y8r94f9/perfil0.webp");
@@ -137,6 +196,7 @@ public class DBManager extends SQLiteOpenHelper {
             //Usuario3
             values.clear();
             values.put("nombre_usuario", "Manuel Fernández");
+            values.put("nombre_completo", "Alberto Debén");
             values.put("email", "manu21@example.com");
             values.put("password", "password3");
             values.put("foto_perfil", "https://i.ibb.co/7v3jqYh/john-krasinski.jpg");
@@ -151,6 +211,11 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Inserta propiedades iniciales en la base de datos.
+     *
+     * @param db Instancia de SQLiteDatabase.
+     */
     private void insertarPropiedadesPorDefecto(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
         try{
@@ -226,6 +291,11 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Inserta fotos iniciales en la base de datos.
+     *
+     * @param db Instancia de SQLiteDatabase.
+     */
     private void insertarFotos(SQLiteDatabase db){
         ContentValues values = new ContentValues();
         FotosEntity fotosEntity = new FotosEntity(db);

@@ -9,12 +9,35 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase UsuarioEntity
+ *
+ * Esta clase gestiona la interacción con la tabla "TABLA_USUARIO" de la base de datos.
+ * Proporciona métodos para insertar, modificar, eliminar y buscar usuarios en la base de datos.
+ *
+ * Estructura de la tabla "TABLA_USUARIO":
+ * - id_usuario: ID único del usuario (clave primaria).
+ * - email: Correo electrónico del usuario (único y obligatorio).
+ * - nombre_usuario: Nombre del usuario (obligatorio).
+ * - foto_perfil: URL de la foto de perfil del usuario.
+ * - password: Contraseña del usuario (obligatorio).
+ * - tlfno: Teléfono del usuario.
+ *
+ * Métodos principales:
+ * - insertar(ContentValues values): Inserta un nuevo usuario en la base de datos.
+ * - modificar(int id_usuario, ...): Modifica los datos de un usuario existente.
+ * - eliminar(int id_usuario): Elimina un usuario de la base de datos.
+ * - buscarPorId(int id_usuario): Busca un usuario por su ID.
+ * - buscar(ContentValues filtros): Realiza una búsqueda dinámica basada en filtros.
+ * - getContentValues(...): Construye un objeto ContentValues con los datos del usuario.
+ */
 public class UsuarioEntity{
     private static SQLiteDatabase db;
     private static final String NOMBRE_TABLA = "TABLA_USUARIO";
     private static final String COL_ID_USUARIO = "id_usuario";
     private static final String COL_EMAIL = "email";
     private static final String COL_NOMBRE_USUARIO = "nombre_usuario";
+    private static final String COL_NOMBRE_COMPLETO = "nombre_completo";
     private static final String COL_FOTO = "foto_perfil";
     private static final String COL_PASSWRD = "password";
 
@@ -24,12 +47,24 @@ public class UsuarioEntity{
         COMPLETADO
     }
 
+    /**
+     * Constructor de la clase.
+     *
+     * @param db Instancia de SQLiteDatabase para interactuar con la base de datos.
+     */
     public UsuarioEntity(SQLiteDatabase db){
         this.db = db;
     }
 
+    /**
+     * Inserta un nuevo usuario en la tabla "TABLA_USUARIO".
+     *
+     * @param values Objeto ContentValues con los datos del usuario.
+     * @return Estado de la inserción (`USUARIO_EXISTENTE`, `ERROR`, `COMPLETADO`).
+     */
     public insertUsuarioEstado insertar(ContentValues values) {
-        if (values.getAsString(COL_NOMBRE_USUARIO) == null || values.getAsString(COL_EMAIL) == null || values.getAsString(COL_PASSWRD) == null) {
+        if (values.getAsString(COL_NOMBRE_USUARIO) == null || values.getAsString(COL_EMAIL) == null
+                || values.getAsString(COL_PASSWRD) == null || values.getAsString(COL_NOMBRE_COMPLETO) == null) {
             Log.e("UsuarioEntity", "Los campos obligatorios no pueden ser nulos.");
             return insertUsuarioEstado.ERROR; // Devuelve ERROR si algún campo obligatorio es nulo
         }
@@ -40,8 +75,8 @@ public class UsuarioEntity{
             db.beginTransaction();
             cursor = db.query(
                     NOMBRE_TABLA,
-                    new String[]{"id_usuario"},
-                    "email = ?",
+                    new String[]{COL_ID_USUARIO},
+                    COL_EMAIL + " = ?",
                     new String[]{values.getAsString("email")},
                     null,
                     null,
@@ -70,13 +105,25 @@ public class UsuarioEntity{
         return estado;
     }
 
-
-    public boolean modificar(int id_usuario, String nuevoNombre, String nuevoEmail, String nuevaPassword, String nuevaFotoPerfil, String nuevoTelefono) {
+    /**
+     * Modifica los datos de un usuario existente.
+     *
+     * @param id_usuario ID del usuario a modificar.
+     * @param nuevoNombreUsuario Nuevo nombre del usuario.
+     * @param nuevoNombreCompleto Nuevo nombre completo.
+     * @param nuevoEmail Nuevo correo electrónico.
+     * @param nuevaPassword Nueva contraseña.
+     * @param nuevaFotoPerfil Nueva URL de la foto de perfil.
+     * @param nuevoTelefono Nuevo número de teléfono.
+     * @return `true` si la modificación fue exitosa, `false` en caso contrario.
+     */
+    public boolean modificar(int id_usuario, String nuevoNombreUsuario, String nuevoNombreCompleto, String nuevoEmail, String nuevaPassword, String nuevaFotoPerfil, String nuevoTelefono) {
         ContentValues values = new ContentValues();
         boolean toret = false;
 
         // Solo agregamos al ContentValues los campos que no son null
-        if (nuevoNombre != null) values.put("nombre_usuario", nuevoNombre);
+        if (nuevoNombreUsuario != null) values.put("nombre_usuario", nuevoNombreUsuario);
+        if (nuevoNombreCompleto != null) values.put("nombre_completo", nuevoNombreCompleto);
         if (nuevoEmail != null) values.put("email", nuevoEmail);
         if (nuevaPassword != null) values.put("password", nuevaPassword);
         if (nuevaFotoPerfil != null) values.put("foto_perfil", nuevaFotoPerfil);
@@ -89,7 +136,7 @@ public class UsuarioEntity{
                 Cursor cursor = db.query(
                         NOMBRE_TABLA,
                         new String[]{"id_usuario"},
-                        "email = ? AND id_usuario != ?", // Verifica que no sea el mismo usuario
+                        COL_EMAIL + " = ? AND "+COL_ID_USUARIO+" != ?", // Verifica que no sea el mismo usuario
                         new String[]{nuevoEmail, String.valueOf(id_usuario)},
                         null,
                         null,
@@ -107,7 +154,7 @@ public class UsuarioEntity{
             int filasAfectadas = db.update(
                     "TABLA_USUARIO",
                     values,
-                    "id_usuario = ?",
+                    COL_ID_USUARIO + " = ?",
                     new String[]{String.valueOf(id_usuario)}
             );
 
@@ -128,7 +175,12 @@ public class UsuarioEntity{
         return toret;
     }
 
-
+    /**
+     * Elimina un usuario de la tabla "TABLA_USUARIO".
+     *
+     * @param id_usuario ID del usuario a eliminar.
+     * @return `true` si la eliminación fue exitosa, `false` en caso contrario.
+     */
     public boolean eliminar(int id_usuario) {
         boolean toret = false;
 
@@ -138,7 +190,7 @@ public class UsuarioEntity{
             // Intentar eliminar el usuario
             int filasEliminadas = db.delete(
                     "TABLA_USUARIO",        // Nombre de la tabla
-                    "id_usuario = ?",       // Cláusula WHERE
+                    COL_ID_USUARIO + " = ?",       // Cláusula WHERE
                     new String[]{String.valueOf(id_usuario)} // Argumentos para el WHERE
             );
 
@@ -158,12 +210,17 @@ public class UsuarioEntity{
         return toret;
     }
 
-
+    /**
+     * Busca un usuario por su ID.
+     *
+     * @param id_usuario ID del usuario a buscar.
+     * @return Cursor con el resultado de la búsqueda.
+     */
     public Cursor buscarPorId(int id_usuario) {
         return db.query(
                 NOMBRE_TABLA,
                 null,
-                "id_usuario = ?",
+                COL_ID_USUARIO + " = ?",
                 new String[]{String.valueOf(id_usuario)},
                 null,
                 null,
@@ -171,6 +228,12 @@ public class UsuarioEntity{
         );
     }
 
+    /**
+     * Realiza una búsqueda dinámica de usuarios basándose en filtros.
+     *
+     * @param filtros Objeto ContentValues con los criterios de búsqueda.
+     * @return Cursor con el resultado de la búsqueda.
+     */
     public Cursor buscar(ContentValues filtros) {
         StringBuilder whereClause = new StringBuilder();
         List<String> whereArgs = new ArrayList<>();
@@ -200,10 +263,42 @@ public class UsuarioEntity{
         );
     }
 
-    public ContentValues getContentValues(String nombre, String email, String password, String fotoPerfil, String telefono){
+    public int getUltimoUsuarioId(){
+        int ultimoId = -1;
+        Cursor cursor = null;
+
+        try {
+            // Consulta para obtener el último ID de vivienda insertado
+            cursor = db.rawQuery("SELECT MAX(id_usuario) AS ultimo_id FROM TABLA_USUARIO", null);
+            if (cursor != null && cursor.moveToFirst()) {
+                ultimoId = cursor.getInt(cursor.getColumnIndexOrThrow("ultimo_id"));
+            }
+        } catch (Exception e) {
+            Log.e("UsuarioEntity", "Error al obtener el último ID de usuario: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return ultimoId;
+    }
+
+    /**
+     * Construye un objeto ContentValues con los datos de un usuario.
+     *
+     * @param nombre Nombre del usuario.
+     * @param email Correo electrónico.
+     * @param password Contraseña.
+     * @param fotoPerfil URL de la foto de perfil.
+     * @param telefono Número de teléfono.
+     * @return Objeto ContentValues con los datos del usuario.
+     */
+    public ContentValues getContentValues(String nombre, String nombreCompleto, String email, String password, String fotoPerfil, String telefono){
         ContentValues values = new ContentValues();
 
         values.put("nombre_usuario", nombre);
+        values.put("nombre_completo", nombreCompleto);
         values.put("email", email);
         values.put("password", password);
         values.put("foto_perfil", fotoPerfil);

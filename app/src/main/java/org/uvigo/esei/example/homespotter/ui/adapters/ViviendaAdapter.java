@@ -72,7 +72,7 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
                 propertyImage.setImageResource(R.drawable.default_image);
             }
             boolean isFavorite = vivienda.isFavorite();
-            favoriteButton.setImageResource(isFavorite ? R.drawable.ic_favorites_selected : R.drawable.ic_favorites);
+            favoriteButton.setImageResource(isFavorite ? R.drawable.ic_favorites_selected : R.drawable.ic_favorites_default);
             favoriteButton.setTag(isFavorite);
 
             // Configurar acción del botón de favoritos
@@ -90,7 +90,7 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
 
                 } else {
                     // Cambiar a estado "no favorito"
-                    favoriteButton.setImageResource(R.drawable.ic_favorites);
+                    favoriteButton.setImageResource(R.drawable.ic_favorites_default);
                     favoritosEntity.eliminar(idUsuario,viviendaId);
                     vivienda.setFavorite(false);
                     Toast.makeText(getContext(), vivienda.getTitulo() + " eliminado de favoritos", Toast.LENGTH_SHORT).show();
