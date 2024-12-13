@@ -22,7 +22,9 @@ import org.uvigo.esei.example.homespotter.R;
 import org.uvigo.esei.example.homespotter.database.DBManager;
 import org.uvigo.esei.example.homespotter.database.FavoritosEntity;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Clase ViviendaDetailActivity
@@ -121,9 +123,17 @@ public class ViviendaDetailActivity extends AppCompatActivity {
         textTitle.setText(titulo);
         propietarioTlfno.setText(user.getTlfno());
         nombrePropietario.setText(user.getNombre());
-        textDireccion.setText(direccion);
-        textDescription.setText(descripcion);
-        textPrice.setText(String.format("%.2f€", precio));
+        String address = this.getString(R.string.address);
+        textDireccion.setText(address +": " + direccion);
+        String desc = this.getString(R.string.description);
+        textDescription.setText(desc+": "+descripcion);
+
+        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("es", "ES"));
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.setMinimumFractionDigits(0);
+        String price = this.getString(R.string.price);
+
+        textPrice.setText(price + ": "+ numberFormat.format(precio) + "€");
 
         // Configurar el botón de favorito
         favoriteButton.setImageResource(isFavorite ? R.drawable.ic_favorites_selected : R.drawable.ic_favorites_default);

@@ -1,5 +1,6 @@
 package org.uvigo.esei.example.homespotter.ui.adapters;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+
 import com.bumptech.glide.Glide;
 
 import org.uvigo.esei.example.homespotter.R;
@@ -23,8 +25,10 @@ import org.uvigo.esei.example.homespotter.ui.activities.ViviendaDetailActivity;
 import org.uvigo.esei.example.homespotter.database.FavoritosEntity;
 import org.uvigo.esei.example.homespotter.models.Vivienda;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
     private int idUsuario;
@@ -38,64 +42,72 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        ViewHolder holder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_property, parent, false);
+            holder = new ViewHolder();
+            holder.favoriteButton = convertView.findViewById(R.id.btn_favorite);
+            holder.propertyTitle = convertView.findViewById(R.id.text_title);
+            holder.propertyPrice = convertView.findViewById(R.id.text_price);
+            holder.propertyAddress = convertView.findViewById(R.id.text_address);
+            holder.propertyImage = convertView.findViewById(R.id.property_image);
+            convertView.setTag(holder);
+
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        // Obtener la propiedad actual
         Vivienda vivienda = getItem(position);
 
-        // Vincular datos con la vista
         ImageView propertyImage = convertView.findViewById(R.id.property_image);
         TextView propertyTitle = convertView.findViewById(R.id.property_title);
         TextView propertyPrice = convertView.findViewById(R.id.property_price);
         TextView propertyAddress = convertView.findViewById(R.id.property_address);
         ImageButton favoriteButton = convertView.findViewById(R.id.btn_favorite);
-
-
+        String priceString = getContext().getString(R.string.price);
+        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("es", "ES"));
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.setMinimumFractionDigits(0);
+        String addressString = getContext().getString(R.string.address);
         if (vivienda != null) {
-            // Vincular datos de texto
             propertyTitle.setText(vivienda.getTitulo());
-            propertyPrice.setText(String.format("%.2f€", vivienda.getPrecio()));
-            propertyAddress.setText(vivienda.getDireccion());
+            propertyPrice.setText(priceString + ": " + numberFormat.format(vivienda.getPrecio()) + "€");
+            propertyAddress.setText(addressString+ ": " + vivienda.getDireccion());
 
-            // Cargar la imagen desde la lista de URLs
             if (vivienda.getFotos() != null && !vivienda.getFotos().isEmpty()) {
-                String imageUrl = vivienda.getFotos().get(0); // Primera URL de la lista
+                String imageUrl = vivienda.getFotos().get(0);
                 Glide.with(getContext())
                         .load(imageUrl)
-                        .placeholder(R.drawable.loading_placeholder) // Placeholder mientras carga
-                        .error(R.drawable.error_placeholder) // Imagen si ocurre un error
+                        .placeholder(R.drawable.loading_placeholder)
+                        .error(R.drawable.error_placeholder)
                         .into(propertyImage);
             } else {
-                // Mostrar una imagen predeterminada si no hay fotos
                 propertyImage.setImageResource(R.drawable.default_image);
             }
-            boolean isFavorite = vivienda.isFavorite();
-            favoriteButton.setImageResource(isFavorite ? R.drawable.ic_favorites_selected : R.drawable.ic_favorites_default);
-            favoriteButton.setTag(isFavorite);
 
-            // Configurar acción del botón de favoritos
-            favoriteButton.setOnClickListener(v -> {
-                int viviendaId = vivienda.getId();
-                boolean currentlyFavorite = vivienda.isFavorite();
-                if(idUsuario <= 0){
-                    Toast.makeText(getContext(), "Inicia Sesión para añadir a Favoritos", Toast.LENGTH_LONG).show();
-                } else if (!currentlyFavorite) {
-                    // Cambiar a estado "favorito"
-                    favoriteButton.setImageResource(R.drawable.ic_favorites_selected);
-                    favoritosEntity.insertar(idUsuario,viviendaId);
-                    vivienda.setFavorite(true);
-                    Toast.makeText(getContext(), vivienda.getTitulo() + " añadido a favoritos", Toast.LENGTH_SHORT).show();
+            if (vivienda.getPropietarioId() == idUsuario) {
+                favoriteButton.setVisibility(View.GONE); // Ocultar el botón si es del usuario actual
+            } else {
+                favoriteButton.setVisibility(View.VISIBLE);
+                favoriteButton.setImageResource(vivienda.isFavorite() ? R.drawable.ic_favorites_selected : R.drawable.ic_favorites_default);
+                favoriteButton.setOnClickListener(v -> {
+                    int viviendaId = vivienda.getId();
+                    boolean currentlyFavorite = vivienda.isFavorite();
+                    if (!currentlyFavorite) {
+                        favoriteButton.setImageResource(R.drawable.ic_favorites_selected);
+                        favoritosEntity.insertar(idUsuario, viviendaId);
+                        vivienda.setFavorite(true);
+                        Toast.makeText(getContext(), vivienda.getTitulo() + " añadido a favoritos", Toast.LENGTH_SHORT).show();
+                    } else {
+                        favoriteButton.setImageResource(R.drawable.ic_favorites_default);
+                        favoritosEntity.eliminar(idUsuario, viviendaId);
+                        vivienda.setFavorite(false);
+                        Toast.makeText(getContext(), vivienda.getTitulo() + " eliminado de favoritos", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
-                } else {
-                    // Cambiar a estado "no favorito"
-                    favoriteButton.setImageResource(R.drawable.ic_favorites_default);
-                    favoritosEntity.eliminar(idUsuario,viviendaId);
-                    vivienda.setFavorite(false);
-                    Toast.makeText(getContext(), vivienda.getTitulo() + " eliminado de favoritos", Toast.LENGTH_SHORT).show();
-                }
-            });
             convertView.setOnClickListener(v -> {
                 Intent intent = new Intent(getContext(), ViviendaDetailActivity.class);
                 intent.putExtra("viviendaId", vivienda.getId());
@@ -114,4 +126,11 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
         return convertView;
     }
 
+    private static class ViewHolder {
+        ImageView propertyImage;
+        TextView propertyTitle;
+        TextView propertyPrice;
+        TextView propertyAddress;
+        ImageButton favoriteButton;
+    }
 }
