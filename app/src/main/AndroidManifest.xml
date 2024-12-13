@@ -28,8 +28,8 @@
         </activity>
         <activity android:name=".ui.activities.PerfilActivity" />
         <activity android:name=".ui.activities.ViviendaActivity" />
-        <activity android:name=".ui.activities.MensajesActivity" />
-        <activity android:name=".ui.activities.FavouritesActivity" />
+        <activity android:name=".ui.activities.MensajeActivity" />
+        <activity android:name=".ui.activities.FavoritesActivity" />
         <activity android:name=".ui.activities.ViviendaDetailActivity" />
         <activity android:name=".ui.activities.MainActivity" />
 
