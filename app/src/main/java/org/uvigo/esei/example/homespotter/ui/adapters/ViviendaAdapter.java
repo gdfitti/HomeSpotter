@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 
 import org.uvigo.esei.example.homespotter.R;
+import org.uvigo.esei.example.homespotter.ui.activities.ViviendaActivity;
 import org.uvigo.esei.example.homespotter.ui.activities.ViviendaDetailActivity;
 import org.uvigo.esei.example.homespotter.database.FavoritosEntity;
 import org.uvigo.esei.example.homespotter.models.Vivienda;
@@ -87,7 +88,9 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
                 favoriteButton.setOnClickListener(v -> {
                     int viviendaId = vivienda.getId();
                     boolean currentlyFavorite = vivienda.isFavorite();
-                    if (!currentlyFavorite) {
+                    if(idUsuario <= 0){
+                        Toast.makeText(getContext(),getContext().getString(R.string.user_not_logged),Toast.LENGTH_LONG).show();
+                    } else if (!currentlyFavorite) {
                         favoriteButton.setImageResource(R.drawable.ic_favorites_selected);
                         favoritosEntity.insertar(idUsuario, viviendaId);
                         vivienda.setFavorite(true);

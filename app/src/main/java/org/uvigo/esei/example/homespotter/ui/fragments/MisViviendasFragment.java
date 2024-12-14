@@ -65,7 +65,7 @@ public class MisViviendasFragment extends Fragment {
         return view;
     }
 
-    private void cargarPropiedades() {
+    public void cargarPropiedades() {
         executor.execute(() -> {
             List<Vivienda> propiedades = ViviendaLoader.cargarViviendas(viviendaEntity, fotosEntity, favoritosEntity, idUsuario, true);
             mainHandler.post(() -> {

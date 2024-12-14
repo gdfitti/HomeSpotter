@@ -88,6 +88,7 @@
     <string name="btnCancelModify">Cancelar</string>
 
     <string name="register">Registrarse</string>
+    <string name="user_not_logged">Error, Inicia Sesión para añadir a favoritos</string>
     <string-array name="property_types">
         <item>Casa</item>
         <item>Apartamento</item>

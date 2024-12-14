@@ -30,6 +30,7 @@
         <activity android:name=".ui.activities.LoginActivity" />
         <activity android:name=".ui.activities.RegisterActivity" />
         <activity android:name=".ui.activities.ModifyProfileActivity" />
+        <activity android:name=".ui.activities.ViviendaAddActivity" />
         <activity android:name=".ui.activities.ViviendaActivity" />
         <activity android:name=".ui.activities.MensajeActivity" />
         <activity android:name=".ui.activities.FavoritesActivity" />

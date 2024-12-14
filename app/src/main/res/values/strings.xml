@@ -86,6 +86,7 @@
     <string name="btnCancelModify">Cancel</string>
 
     <string name="register">Register</string>
+    <string name="user_not_logged">Error, Login To Like</string>
 
     <string-array name="property_types">
         <item>House</item>

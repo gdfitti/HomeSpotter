@@ -106,26 +106,14 @@ public class ViviendaActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        ActivityResultLauncher<Intent> addViviendaLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                result -> {
-//                    if (result.getResultCode() == RESULT_OK) {
-//                        // Encuentra el fragmento actual visible
-//                        ViviendasFragment fragment = (ViviendasFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-//
-//                        if (fragment != null) {
-//                            fragment.cargarPropiedades(); // Llama al método para recargar la lista
-//                        }
-//                    }
-//                }
-//        );
+
         if (item.getItemId() == R.id.apply_filter) {
             showFilterDialog();
             return true;
         }else if(item.getItemId() == R.id.add_propertie){
             Intent intent = new Intent(ViviendaActivity.this, ViviendaAddActivity.class);
             intent.putExtra("userId", idUsuario); // Pasa el ID del usuario
-//            addViviendaLauncher.launch(intent);
+            startActivity(intent);
             return true;
         }
 
@@ -228,6 +216,31 @@ public class ViviendaActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        // Obtener el usuario actual desde SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        int nuevoIdUsuario = sharedPreferences.getInt("user_id", -1);
+
+        // Si el usuario cambió, recrear el fragmento
+        if (idUsuario != nuevoIdUsuario) {
+            idUsuario = nuevoIdUsuario;
+
+            // Reemplazar el fragmento con el nuevo ID de usuario
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, ViviendasFragment.newInstance(idUsuario))
+                    .commit();
+        } else {
+            // Si el usuario no cambió, notificar al fragmento actual para recargar datos
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (currentFragment instanceof ViviendasFragment) {
+                ((ViviendasFragment) currentFragment).cargarPropiedades();
+            }else if(currentFragment instanceof MisViviendasFragment){
+                ((MisViviendasFragment) currentFragment).cargarPropiedades();
+            }
+        }
+    }
 
 }
