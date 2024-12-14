@@ -1,15 +1,22 @@
 package org.uvigo.esei.example.homespotter.ui.activities;
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.uvigo.esei.example.homespotter.R;
@@ -35,7 +42,8 @@ import org.uvigo.esei.example.homespotter.ui.fragments.ViviendasFragment;
  * - Entidades: `ViviendaEntity`, `FotosEntity`, `FavoritosEntity`.
  */
 public class ViviendaActivity extends BaseActivity {
-    private int idUsuario = 1;
+    private int idUsuario;
+
 
     /**
      * Método `onCreate`
@@ -47,28 +55,11 @@ public class ViviendaActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        idUsuario = sharedPreferences.getInt("user_id", -1);
         changeBottomNavigationIcon(R.id.nav_properties,R.drawable.ic_home_selected);
-        ActivityResultLauncher<Intent> addViviendaLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        // Encuentra el fragmento actual visible
-                        ViviendasFragment fragment = (ViviendasFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-                        if (fragment != null) {
-                            fragment.cargarPropiedades(); // Llama al método para recargar la lista
-                        }
-                    }
-                }
-        );
-
-        // Configurar botones flotantes
-        findViewById(R.id.button_back).setOnClickListener(v -> finish());
-        findViewById(R.id.button_add_property).setOnClickListener(v -> {
-            Intent intent = new Intent(ViviendaActivity.this, ViviendaAddActivity.class);
-            intent.putExtra("userId", idUsuario); // Pasa el ID del usuario
-            addViviendaLauncher.launch(intent);
-        });
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.property_toolbar);
+        setSupportActionBar(toolbar);
 
         // Configurar el BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.appbar_navigation);
@@ -107,6 +98,107 @@ public class ViviendaActivity extends BaseActivity {
         return R.layout.activity_viviendas;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.filter_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        ActivityResultLauncher<Intent> addViviendaLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                result -> {
+//                    if (result.getResultCode() == RESULT_OK) {
+//                        // Encuentra el fragmento actual visible
+//                        ViviendasFragment fragment = (ViviendasFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+//
+//                        if (fragment != null) {
+//                            fragment.cargarPropiedades(); // Llama al método para recargar la lista
+//                        }
+//                    }
+//                }
+//        );
+        if (item.getItemId() == R.id.apply_filter) {
+            showFilterDialog();
+            return true;
+        }else if(item.getItemId() == R.id.add_propertie){
+            Intent intent = new Intent(ViviendaActivity.this, ViviendaAddActivity.class);
+            intent.putExtra("userId", idUsuario); // Pasa el ID del usuario
+//            addViviendaLauncher.launch(intent);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void showFilterDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_filters, null);
+        EditText minPriceEditText = dialogView.findViewById(R.id.EditText_min_price);
+        EditText maxPriceEditText = dialogView.findViewById(R.id.EditText_max_price);
+        EditText titleEditText = dialogView.findViewById(R.id.EditText_property_title);
+        EditText addressEditText = dialogView.findViewById(R.id.EditText_property_address);
+        EditText typeEditText = dialogView.findViewById(R.id.EditText_property_type);
+        EditText stateEditText = dialogView.findViewById(R.id.EditText_property_state);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(this.getString(R.string.filters))
+                .setView(dialogView);
+        builder.setPositiveButton(this.getString(R.string.apply), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                boolean buscar = false;
+                ContentValues filtros = new ContentValues();
+
+                // Procesar los campos de texto
+                if (!titleEditText.getText().toString().trim().isEmpty()) {
+                    filtros.put("titulo", titleEditText.getText().toString().trim());
+                    buscar = true;
+                }
+                if (!addressEditText.getText().toString().trim().isEmpty()) {
+                    filtros.put("direccion", addressEditText.getText().toString().trim());
+                    buscar = true;
+                }
+                if (!typeEditText.getText().toString().trim().isEmpty()) {
+                    filtros.put("tipo_vivienda", typeEditText.getText().toString().trim());
+                    buscar = true;
+                }
+                if (!stateEditText.getText().toString().trim().isEmpty()) {
+                    filtros.put("estado", stateEditText.getText().toString().trim());
+                    buscar = true;
+                }
+
+                // Procesar precios
+                Double minPrice = null, maxPrice = null;
+                try {
+                    if (!minPriceEditText.getText().toString().trim().isEmpty()) {
+                        minPrice = Double.parseDouble(minPriceEditText.getText().toString().trim());
+                        buscar = true;
+                    }
+                    if (!maxPriceEditText.getText().toString().trim().isEmpty()) {
+                        maxPrice = Double.parseDouble(maxPriceEditText.getText().toString().trim());
+                        buscar = true;
+                    }
+                } catch (NumberFormatException e) {
+                    Toast.makeText(ViviendaActivity.this, "Introduce un número válido en los campos de precio.", Toast.LENGTH_SHORT).show();
+                    return; // Sal del método si hay un error
+                }
+
+                // Aplicar los filtros solo si hay datos válidos
+                if (buscar) {
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                    if (fragment instanceof ViviendasFragment) {
+                        ((ViviendasFragment) fragment).applyFilters(filtros, minPrice, maxPrice);
+                    }
+                } else {
+                    Toast.makeText(ViviendaActivity.this, "Por favor, rellena al menos un campo para aplicar filtros.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton(this.getString(R.string.sure_cancel), null);
+        builder.create().show();
+    }
 
     /**
      * Método `onActivityResult`

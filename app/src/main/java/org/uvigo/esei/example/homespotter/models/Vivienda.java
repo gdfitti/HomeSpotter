@@ -93,7 +93,7 @@ public class Vivienda {
         this.contacto = contacto;
         this.descripcion = descripcion;
         this.propietarioId = propietarioId;
-        this.fotos = fotos;
+        this.fotos = fotoUrl;
     }
 
     // Getters y Setters

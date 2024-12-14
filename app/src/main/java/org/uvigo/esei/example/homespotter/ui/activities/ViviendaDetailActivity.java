@@ -123,17 +123,17 @@ public class ViviendaDetailActivity extends AppCompatActivity {
         textTitle.setText(titulo);
         propietarioTlfno.setText(user.getTlfno());
         nombrePropietario.setText(user.getNombre());
-        String address = this.getString(R.string.address);
-        textDireccion.setText(address +": " + direccion);
-        String desc = this.getString(R.string.description);
-        textDescription.setText(desc+": "+descripcion);
+        String address = this.getString(R.string.address)+": " + direccion;
+        textDireccion.setText(address);
+        String desc = this.getString(R.string.description)+": "+descripcion;
+        textDescription.setText(desc);
 
         NumberFormat numberFormat = NumberFormat.getInstance(new Locale("es", "ES"));
         numberFormat.setMaximumFractionDigits(2);
         numberFormat.setMinimumFractionDigits(0);
-        String price = this.getString(R.string.price);
+        String price = this.getString(R.string.price)+ ": "+ numberFormat.format(precio) + "€";
 
-        textPrice.setText(price + ": "+ numberFormat.format(precio) + "€");
+        textPrice.setText(price);
 
         // Configurar el botón de favorito
         favoriteButton.setImageResource(isFavorite ? R.drawable.ic_favorites_selected : R.drawable.ic_favorites_default);
@@ -161,7 +161,7 @@ public class ViviendaDetailActivity extends AppCompatActivity {
             setResult(RESULT_OK, resultIntent);
         });
 
-        // Configurar botón de volver atrás
+        //volver atrás
         backButton.setOnClickListener(v -> finish());
     }
 }

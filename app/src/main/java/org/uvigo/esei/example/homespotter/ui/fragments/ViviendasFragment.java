@@ -1,5 +1,7 @@
 package org.uvigo.esei.example.homespotter.ui.fragments;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,9 +28,8 @@ import java.util.concurrent.Executors;
 
 public class ViviendasFragment extends Fragment {
 
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private Handler mainHandler = new Handler(Looper.getMainLooper());
-    private ListView listView;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private ViviendaAdapter adapter;
     private List<Vivienda> propertyList;
     private int idUsuario;
@@ -57,7 +58,7 @@ public class ViviendasFragment extends Fragment {
         favoritosEntity = new FavoritosEntity(DBManager.getInstance(requireContext()).getWritableDatabase());
 
         // Configurar ListView y adaptador
-        listView = view.findViewById(R.id.property_list);
+        ListView listView = view.findViewById(R.id.property_list);
         propertyList = new ArrayList<>();
         adapter = new ViviendaAdapter(requireContext(), propertyList, DBManager.getInstance(requireContext()).getWritableDatabase(), idUsuario);
         listView.setAdapter(adapter);
@@ -69,6 +70,38 @@ public class ViviendasFragment extends Fragment {
 
     }
 
+    public void applyFilters(ContentValues filtros, Double minPrice, Double maxPrice) {
+        executor.execute(() -> {
+            Cursor cursor = viviendaEntity.buscar(filtros, minPrice, maxPrice);
+            List<Vivienda> filteredViviendas = new ArrayList<>();
+            List<Integer> favoritosList = favoritosEntity.obtenerFavoritosPorUsuario(idUsuario);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("id_vivienda"));
+                    List<String> fotos = fotosEntity.obtenerListaFotos(id);
+                    int idPropietario = cursor.getInt(cursor.getColumnIndexOrThrow("propietario_id"));
+                    String titulo = cursor.getString(cursor.getColumnIndexOrThrow("titulo"));
+                    String tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo_vivienda"));
+                    double precio = cursor.getDouble(cursor.getColumnIndexOrThrow("precio"));
+                    String direccion = cursor.getString(cursor.getColumnIndexOrThrow("direccion"));
+                    String estado = cursor.getString(cursor.getColumnIndexOrThrow("estado"));
+                    String contacto = cursor.getString(cursor.getColumnIndexOrThrow("contacto"));
+                    String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"));
+                    boolean favorito = favoritosList.contains(id);
+                    // Agregar la vivienda a la lista filtrada
+                    filteredViviendas.add(new Vivienda(id, titulo, tipo, precio, direccion, estado,contacto ,descripcion,idPropietario,favorito, fotos));
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+
+            mainHandler.post(() -> {
+                propertyList.clear();
+                propertyList.addAll(filteredViviendas);
+                adapter.notifyDataSetChanged();
+            });
+        });
+    }
     /**
      * Método `cargarPropiedades`
      * Obtiene todas las viviendas desde la base de datos, incluidas sus fotos y estado de favorito,

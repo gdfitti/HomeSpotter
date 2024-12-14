@@ -57,7 +57,6 @@ public class ViviendaEntity {
     /**
      * Inserta una nueva vivienda en la tabla "TABLA_VIVIENDA".
      *
-     * @param id_vivienda ID de la vivienda (opcional para autoincremento).
      * @param tipoVivienda Tipo de la vivienda.
      * @param precio Precio de la vivienda.
      * @param direccion Dirección de la vivienda.
@@ -218,8 +217,8 @@ public class ViviendaEntity {
                 if (whereClause.length() > 0) {
                     whereClause.append(" AND ");
                 }
-                whereClause.append(key).append(" = ?");
-                whereArgs.add(filtros.getAsString(key));
+                whereClause.append(key).append(" LIKE ?");
+                whereArgs.add("%" + filtros.getAsString(key) + "%");
             }
         }
 

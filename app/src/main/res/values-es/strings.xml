@@ -50,10 +50,44 @@
     <string name="cancel">Cancelar</string>
     <string name="property_image_desc">Vista previa de la propiedad</string>
     <string name="add_to_favorites">Añadir a favoritos</string>
-    <string name="app_logo">HomeSpotter</string>
+    <string name="app_logo">🏡 HomeSpotter</string>
     <string name="owner_photo">Dueño</string>
 
+    <string name="default_title">Ejemplo de título</string>
+    <string name="default_price">Precio: 200.000€</string>
+    <string name="default_address">Dirección: Avocado Street, No. 3</string>
 
+    <string name="apply">Aplicar</string>
+    <string name="title_toolbar_property">Viviendas</string>
+    <string name="sure_cancel">¿Seguro que quieres cancelar la operación?</string>
+
+    <string name="fullname_text">Nombre y Apellidos:</string>
+    <string name="username_text">Nombre de Usuario:</string>
+    <string name="password_text">Contraseña:</string>
+    <string name="email_text">Email:</string>
+    <string name="tlfno_text">Teléfono:</string>
+
+    <string name="fullname_hint">Nombre y Apellidos</string>
+    <string name="username_hint">Nombre de Usuario</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="email_hint">Email</string>
+    <string name="tlfno_hint">Teléfono</string>
+
+    <string name="show_password_checkbox">Show Password</string>
+    <string name="modify_profile_text">Guardar Perfil</string>
+
+
+    <string name="welcome_app">¡Bienvenido nuevo usuario!</string>
+    <string name="welcome_again_app">¡Bienvenido de nuevo!</string>
+
+    <string name="btnLogin">Acceder</string>
+    <string name="btnRegister">Registrarse</string>
+    <string name="btnSaveProfile">Guardar Perfil</string>
+    <string name="btnModify">Modificar Perfil</string>btnLogout
+    <string name="btnLogout">Cerrar Sesión</string>
+    <string name="btnCancelModify">Cancelar</string>
+
+    <string name="register">Registrarse</string>
     <string-array name="property_types">
         <item>Casa</item>
         <item>Apartamento</item>

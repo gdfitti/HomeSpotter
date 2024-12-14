@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
-    private int idUsuario;
-    private FavoritosEntity favoritosEntity;
+    private final int idUsuario;
+    private final FavoritosEntity favoritosEntity;
     public ViviendaAdapter(@NonNull Context context, @NonNull List<Vivienda> properties, SQLiteDatabase db, int idUsuario) {
         super(context, 0, properties);
         this.idUsuario = idUsuario;
@@ -42,20 +42,9 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_property, parent, false);
-            holder = new ViewHolder();
-            holder.favoriteButton = convertView.findViewById(R.id.btn_favorite);
-            holder.propertyTitle = convertView.findViewById(R.id.text_title);
-            holder.propertyPrice = convertView.findViewById(R.id.text_price);
-            holder.propertyAddress = convertView.findViewById(R.id.text_address);
-            holder.propertyImage = convertView.findViewById(R.id.property_image);
-            convertView.setTag(holder);
-
-        } else {
-            holder = (ViewHolder) convertView.getTag();
         }
 
         Vivienda vivienda = getItem(position);
@@ -65,15 +54,19 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
         TextView propertyPrice = convertView.findViewById(R.id.property_price);
         TextView propertyAddress = convertView.findViewById(R.id.property_address);
         ImageButton favoriteButton = convertView.findViewById(R.id.btn_favorite);
-        String priceString = getContext().getString(R.string.price);
+
         NumberFormat numberFormat = NumberFormat.getInstance(new Locale("es", "ES"));
         numberFormat.setMaximumFractionDigits(2);
         numberFormat.setMinimumFractionDigits(0);
-        String addressString = getContext().getString(R.string.address);
+        String priceString = "";
+        String addressString = "";
+
         if (vivienda != null) {
+            priceString = getContext().getString(R.string.price) + ": " + numberFormat.format(vivienda.getPrecio()) + "€";
+            addressString = getContext().getString(R.string.address)+ ": " + vivienda.getDireccion();
             propertyTitle.setText(vivienda.getTitulo());
-            propertyPrice.setText(priceString + ": " + numberFormat.format(vivienda.getPrecio()) + "€");
-            propertyAddress.setText(addressString+ ": " + vivienda.getDireccion());
+            propertyPrice.setText(priceString);
+            propertyAddress.setText(addressString);
 
             if (vivienda.getFotos() != null && !vivienda.getFotos().isEmpty()) {
                 String imageUrl = vivienda.getFotos().get(0);
@@ -124,13 +117,5 @@ public class ViviendaAdapter extends ArrayAdapter<Vivienda> {
         }
 
         return convertView;
-    }
-
-    private static class ViewHolder {
-        ImageView propertyImage;
-        TextView propertyTitle;
-        TextView propertyPrice;
-        TextView propertyAddress;
-        ImageButton favoriteButton;
     }
 }

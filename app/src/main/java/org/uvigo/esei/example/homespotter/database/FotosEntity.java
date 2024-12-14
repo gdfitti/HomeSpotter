@@ -6,6 +6,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FotosEntity {
     private SQLiteDatabase db;
     private static final String NOMBRE_TABLA = "TABLA_FOTOS";
@@ -83,5 +86,24 @@ public class FotosEntity {
                 new String[]{String.valueOf(viviendaId)},
                 null, null, null
         );
+    }
+
+    public List<String> obtenerListaFotos(int viviendaId) {
+        if (viviendaId <= 0) {
+            Log.e("FotosEntity", "ID de vivienda inválido para consultar fotos.");
+            return null;
+        }
+
+        List<String> fotos = new ArrayList<>();
+        Cursor cursor = obtenerFotosPorVivienda(viviendaId);
+
+        if(cursor != null && cursor.moveToFirst()){
+            do{
+                fotos.add(cursor.getString(cursor.getColumnIndexOrThrow(COL_URL_FOTO)));
+                cursor.close();
+            }while(cursor.moveToNext());
+            cursor.close();
+        }
+        return fotos;
     }
 }

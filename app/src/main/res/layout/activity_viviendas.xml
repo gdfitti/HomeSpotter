@@ -5,18 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.google.android.material.appbar.AppBarLayout
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/property_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/teal_700"
+        android:elevation="4dp"
+        android:title="@string/title_toolbar_property"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/appbar_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/appbar_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:menu="@menu/menu_vivienda_navigation" />
-    </com.google.android.material.appbar.AppBarLayout>
-
+        app:menu="@menu/menu_vivienda_navigation" />
     <!-- Contenedor principal para fragmentos -->
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -24,32 +26,5 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="8dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/back"
-            android:src="@drawable/ic_back"
-            android:layout_marginEnd="5dp"
-            android:tint="@android:color/darker_gray"
-            app:backgroundTint="@color/teal_200" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_add_property"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/add_property"
-            android:src="@drawable/ic_add"
-            android:layout_marginEnd="10dp"
-            android:tint="@android:color/white"
-            app:backgroundTint="@color/teal_200" />
-    </LinearLayout>
 
 </LinearLayout>

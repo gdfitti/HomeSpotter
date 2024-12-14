@@ -4,14 +4,29 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
-
     <TextView
-        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/filters"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:text="@string/title"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/EditText_property_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/address"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/EditText_property_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/address"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,10 +34,23 @@
         android:text="@string/type_of_property"
         android:layout_marginTop="16dp" />
 
-    <Spinner
-        android:id="@+id/spinner_property_type"
+    <EditText
+        android:id="@+id/EditText_property_type"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="@string/type"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/state"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/EditText_property_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/state"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,24 +58,19 @@
         android:text="@string/price_range"
         android:layout_marginTop="16dp" />
 
+
     <EditText
-        android:id="@+id/et_min_price"
+        android:id="@+id/EditText_min_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/min_price"
         android:inputType="numberDecimal" />
 
     <EditText
-        android:id="@+id/et_max_price"
+        android:id="@+id/EditText_max_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/max_price"
         android:inputType="numberDecimal" />
 
-    <Button
-        android:id="@+id/btn_apply_filters"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/apply_filters"
-        android:layout_marginTop="16dp" />
 </LinearLayout>

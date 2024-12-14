@@ -1,51 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center_horizontal"
         android:padding="16dp">
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_logo"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="24dp"
+            android:gravity="center" />
+
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Usuario" />
+            android:layout_height="48dp"
+            android:background="@drawable/custom_edittext"
+            android:drawablePadding="8dp"
+            android:hint="@string/username_hint"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textColorHighlight="@color/cardview_dark_background" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
+            android:background="@drawable/custom_edittext"
+            android:drawablePadding="8dp"
+            android:padding="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_height="48dp"
+            android:hint="@string/password_hint"
             android:inputType="textPassword" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Iniciar sesión" />
+            android:text="@string/btnLogin"
+            android:layout_marginTop="4dp"/>
 
         <Button
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrarse" />
+            android:text="@string/btnRegister" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Aún no estas registrado? Hazlo ahora"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:id="@+id/signupText"
+            android:layout_marginBottom="20dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="end"
+        android:padding="16dp">
 
         <Button
-            android:id="@+id/btn_back_to_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Atrás"
-            android:layout_margin="16dp"
-            android:layout_gravity="start" />
+            android:id="@+id/btn_back_to_home"
+            android:text="volver" />
     </LinearLayout>
 </LinearLayout>

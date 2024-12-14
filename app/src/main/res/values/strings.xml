@@ -52,6 +52,41 @@
     <string name="app_logo">HomeSpotter</string>
     <string name="owner_photo">Owner</string>
 
+    <string name="default_title">Title Example</string>
+    <string name="default_price">Price: 200.000€</string>
+    <string name="default_address">Address: Avocado Street, No. 3</string>
+
+    <string name="apply">Apply</string>
+    <string name="title_toolbar_property">Properties</string>
+    <string name="sure_cancel">Are you sure you want cancel the operation?</string>
+
+    <string name="fullname_text">Name and Surname:</string>
+    <string name="username_text">User Name:</string>
+    <string name="password_text">Password:</string>
+    <string name="email_text">Email:</string>
+    <string name="tlfno_text">Phone Number:</string>
+
+    <string name="fullname_hint">Name and Surname</string>
+    <string name="username_hint">User Name</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="tlfno_hint">Phone Number</string>
+
+    <string name="show_password_checkbox">Show Password</string>
+    <string name="modify_profile_text">Save Profile</string>
+
+    <string name="welcome_app">¡Welcome New User!</string>
+    <string name="welcome_again_app">¡Welcome Back!</string>
+
+    <string name="btnLogin">Log in</string>
+    <string name="btnRegister">Register</string>
+    <string name="btnSaveProfile">Save profile</string>
+    <string name="btnModify">Modify profile</string>btnLogout
+    <string name="btnLogout">Log out</string>
+    <string name="btnCancelModify">Cancel</string>
+
+    <string name="register">Register</string>
+
     <string-array name="property_types">
         <item>House</item>
         <item>Apartment</item>
