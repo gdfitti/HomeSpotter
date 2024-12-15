@@ -174,7 +174,6 @@ public class DBManager extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         try {
             db.beginTransaction();
-            // Insertar usuarios predeterminados
             // Usuario 1
             values.put("nombre_usuario", "monica");
             values.put("nombre_completo", "Monica Perez");
@@ -183,8 +182,48 @@ public class DBManager extends SQLiteOpenHelper {
             values.put("foto_perfil", "https://i.ibb.co/C5czCdt/Perfil1.jpg");
             values.put("tlfno", "123456789");
             db.insert("TABLA_USUARIO", null, values);
+
+
+            // Usuario 2
             values.clear();
-            // Otros usuarios...
+            values.put("nombre_usuario", "martin");
+            values.put("nombre_completo", "Martin Carreño");
+            values.put("email", "martin@homespotter.com");
+            values.put("password", "password2");
+            values.put("foto_perfil", "https://i.ibb.co/y8r94f9/perfil0.webp");
+            values.put("tlfno", "987654321");
+            db.insert("TABLA_USUARIO", null, values);
+
+            //Usuario3
+            values.clear();
+            values.put("nombre_usuario", "manufdez");
+            values.put("nombre_completo", "Manuel Fernández");
+            values.put("email", "manuel@homespotter.com");
+            values.put("password", "password3");
+            values.put("foto_perfil", "https://i.ibb.co/7v3jqYh/john-krasinski.jpg");
+            values.put("tlfno", "987654321");
+            db.insert("TABLA_USUARIO", null, values);
+
+
+            //Usuario4
+            values.clear();
+            values.put("nombre_usuario", "laura");
+            values.put("nombre_completo", "Laura Marco");
+            values.put("email", "laura@homespotter.com");
+            values.put("password", "password4");
+            values.put("foto_perfil", "https://i.ibb.co/YbCjCyw/temp-image751449585090711274.jpg");
+            values.put("tlfno", "987654321");
+            db.insert("TABLA_USUARIO", null, values);
+
+            //Usuario5
+            values.clear();
+            values.put("nombre_usuario", "johnny");
+            values.put("nombre_completo", "John Cena");
+            values.put("email", "johncena@homespotter.com");
+            values.put("password", "password5");
+            values.put("foto_perfil", "https://i.ibb.co/sK3FZ8n/temp-image.png");
+            values.put("tlfno", "987654321");
+            db.insert("TABLA_USUARIO", null, values);
             db.setTransactionSuccessful();
         } catch (SQLException exc) {
             Log.e("DBManager.insertarUsuarios", "Error al crear usuarios: " + exc.getMessage());
@@ -202,7 +241,7 @@ public class DBManager extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         try {
             db.beginTransaction();
-            // Insertar propiedades predeterminadas
+            // Primera propiedad
             values.put("tipo_vivienda", "Casa");
             values.put("precio", 200000.00);
             values.put("titulo", "Casa en Berres");
@@ -212,7 +251,116 @@ public class DBManager extends SQLiteOpenHelper {
             values.put("descripcion", "Casa amplia con jardín.");
             values.put("propietario_id", 1);
             db.insert("TABLA_VIVIENDA", null, values);
+
+            // Segunda propiedad
             values.clear();
+            values.put("tipo_vivienda", "Apartamento");
+            values.put("precio", 150000.00);
+            values.put("titulo", "Apartamento en Coruña");
+            values.put("direccion", "Avenida Siempreviva 742, 15023, A Coruña");
+            values.put("estado", "Ocupado");
+            values.put("contacto", "manuel@homespotter.com");
+            values.put("descripcion", "Apartamento moderno en el centro.");
+            values.put("propietario_id", 2);
+            db.insert("TABLA_VIVIENDA", null, values);
+
+            values.clear();
+
+            // Vivienda 3
+            values.clear();
+            values.put("tipo_vivienda", "Estudio");
+            values.put("precio", 100000.00);
+            values.put("titulo", "Estudio céntrico");
+            values.put("direccion", "Plaza Mayor 5, 20112, Madrid");
+            values.put("estado", "Disponible");
+            values.put("contacto", "aaron@homespotter.com");
+            values.put("descripcion", "Estudio perfecto para estudiantes.");
+            values.put("propietario_id", 3);
+            db.insert("TABLA_VIVIENDA", null, values);
+
+            //4
+            values.clear();
+            values.put("tipo_vivienda", "Apartamento" );
+            values.put("precio", 170000);
+            values.put("titulo", "Casa céntrica");
+            values.put("direccion", "Calle Bellas Artes, 5, 15203, Noia ");
+            values.put("estado", "Amueblado");
+            values.put("contacto", "gio@homespotter.com");
+            values.put("descripcion", "Descubre esta hermosa vivienda diseñada para ofrecer comodidad y estilo en cada rincón. La casa cuenta con una fachada contemporánea que combina líneas limpias y detalles en tonos cálidos, creando una atmósfera acogedora y sofisticada. ");
+            values.put("propietario_id", 4);
+            db.insert("TABLA_VIVIENDA", null, values);
+
+            //5
+            values.clear();
+            values.put("tipo_vivienda", "Casa" );
+            values.put("precio", 800000);
+            values.put("titulo", "Hogar moderno");
+            values.put("direccion", "Calle San Mamés, 4, 33211, Burgos");
+            values.put("estado", "Preparado");
+            values.put("contacto", "andre@homespotter.com");
+            values.put("descripcion", "Vivienda fuera de lo común");
+            values.put("propietario_id", 5);
+            db.insert("TABLA_VIVIENDA", null, values);values.clear();
+
+            //6
+            values.clear();
+            values.put("tipo_vivienda", "Apartamento");
+            values.put("precio", 450000);
+            values.put("titulo", "Apartamento Santiago");
+            values.put("direccion", "Calle Galeras, 34, 15352, Santiago de Compostela ");
+            values.put("estado", "Bien");
+            values.put("contacto", "monica@homespotter.com");
+            values.put("descripcion", "Se admiten estudiantes para alquilar, info al contacto");
+            values.put("propietario_id", 1);
+            db.insert("TABLA_VIVIENDA", null, values);
+
+            //7
+            values.clear();
+            values.put("tipo_vivienda", "Casa" );
+            values.put("precio", 450000);
+            values.put("titulo", "Casa en Vilagarcía");
+            values.put("direccion", "Nostradamus, 5, 23423, Vilagarcía de Arousa");
+            values.put("estado", "Impecable");
+            values.put("contacto", "manuel@homespotter.com");
+            values.put("descripcion", "A 5 min del centro en coche");
+            values.put("propietario_id", 2);
+            db.insert("TABLA_VIVIENDA", null, values);
+
+            //8
+            values.clear();
+            values.put("tipo_vivienda", "Apartamento");
+            values.put("precio", 420000);
+            values.put("titulo", "Apartamento completo en Lugo");
+            values.put("direccion", "Calle Rosalía de Castro, 25, 15552, Lugo ");
+            values.put("estado", "Amueblado");
+            values.put("contacto", "aaron@homespotter.com");
+            values.put("descripcion", "Lista para vivir");
+            values.put("propietario_id", 3);
+            db.insert("TABLA_VIVIENDA", null, values);
+
+            //9
+            values.clear();
+            values.put("tipo_vivienda", "Casa" );
+            values.put("precio", 200000);
+            values.put("titulo", "Casa en el campo");
+            values.put("direccion", "Calle Castro de Sieiro, 53, 26262, Curtis ");
+            values.put("estado", "Reformable");
+            values.put("contacto", "gio@homespotter.com");
+            values.put("descripcion", "Casa acogedora necesita reformas");
+            values.put("propietario_id", 4);
+            db.insert("TABLA_VIVIENDA", null, values);
+
+            //10
+            values.clear();
+            values.put("tipo_vivienda", "Casa");
+            values.put("precio", 180000);
+            values.put("titulo", "Casa a 20 min de la facultad");
+            values.put("direccion", "Calle Curros Enriquez, 65, 32007, Ourense ");
+            values.put("estado", "Amueblado");
+            values.put("contacto", "andre@homespotter.com");
+            values.put("descripcion", "viene con todo");
+            values.put("propietario_id", 5);
+            db.insert("TABLA_VIVIENDA", null, values);
             db.setTransactionSuccessful();
         } catch (SQLException exc) {
             Log.e("DBManager.insertarPropiedades", "Error al crear propiedades: " + exc.getMessage());
@@ -228,7 +376,16 @@ public class DBManager extends SQLiteOpenHelper {
      */
     private void insertarFotos(SQLiteDatabase db) {
         FotosEntity fotosEntity = new FotosEntity(db);
-        fotosEntity.insertar(1, "https://i.ibb.co/N9fJyVq/chale.png");
-        fotosEntity.insertar(2, "https://i.ibb.co/8xxwgyv/Apartamento.jpg");
+        fotosEntity.insertar(1,"https://i.ibb.co/N9fJyVq/chale.png");
+        fotosEntity.insertar(2,"https://i.ibb.co/8xxwgyv/Apartamento.jpg");
+        fotosEntity.insertar(3,"https://i.ibb.co/Wg87SSg/Casa-Vilagarc-a.jpg");
+        fotosEntity.insertar(4,"https://i.ibb.co/BjfQ01V/CL11-C4-F3-19627.webp");
+        fotosEntity.insertar(5,"https://i.ibb.co/K0BJ5t3/13-Imagen-Exterior-arquitecturaicomplementos.jpg");
+        fotosEntity.insertar(6,"https://i.ibb.co/NZVwnLX/t.jpg");
+        fotosEntity.insertar(7,"https://i.ibb.co/Fgyn1Qw/vivienda0.jpg");
+        fotosEntity.insertar(7,"https://i.ibb.co/FxJq3HQ/454536807.jpg");
+        fotosEntity.insertar(8,"https://i.ibb.co/jVsM9Mt/download.jpg");
+        fotosEntity.insertar(9,"https://i.ibb.co/N9W6t73/pontevedra-casa-da-carballeira.jpg");
+        fotosEntity.insertar(10,"https://i.ibb.co/1zg731h/1761620544.jpg");
     }
 }
