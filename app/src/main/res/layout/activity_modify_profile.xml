@@ -52,14 +52,14 @@
 
             <ImageView
                 android:id="@+id/profile_image"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@drawable/ic_profile_default"
                 android:scaleType="centerCrop"
                 android:clipToOutline="true"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/circle_profile_background"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/profile" />
 
             <Button
                 android:id="@+id/btn_replace_photo"
@@ -112,7 +112,6 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center_vertical"
-                android:inputType="text"
                 android:text="@string/email_text"
                 tools:ignore="TouchTargetSizeCheck" />
 
@@ -132,7 +131,6 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center_vertical"
-                android:inputType="text"
                 android:text="@string/tlfno_text"
                 tools:ignore="TouchTargetSizeCheck" />
 
@@ -143,7 +141,7 @@
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:hint="Phone Number"
+                android:hint="@string/tlfno_hint"
                 android:inputType="phone"/>
 
             <TextView
@@ -152,7 +150,6 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center_vertical"
-                android:inputType="text"
                 android:text="@string/password_text"
                 tools:ignore="TouchTargetSizeCheck" />
 

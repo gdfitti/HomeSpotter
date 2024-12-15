@@ -1,7 +1,7 @@
 <resources>
 
     <!-- activity_main -->
-    <string name="app_name">🏡 HomeSpotter</string>
+    <string name="app_name">HomeSpotter</string>
     <string name="slogan">Find your ideal home quickly and easily.</string>
     <string name="appDesc">With HomeSpotter, exploring, comparing, and choosing the perfect property has never been easier.
                            Our platform allows you to access the best available properties and manage them according to your preferences.
@@ -49,7 +49,7 @@
     <string name="cancel">Cancel</string>
     <string name="property_image_desc">Property Preview</string>
     <string name="add_to_favorites">Add to Favorites</string>
-    <string name="app_logo">HomeSpotter</string>
+    <string name="app_logo">🏡 HomeSpotter</string>
     <string name="owner_photo">Owner</string>
 
     <string name="default_title">Title Example</string>
@@ -101,6 +101,24 @@
     <string name="no">No</string>
 
     <string name="register_now">Not registered yet? Do it now!</string>
+    <string name="favorites_tittle">Favorite Properties:</string>
+
+    <string name="missing_chats">Missing Chats...</string>
+    <string name="send_message">Send Message</string>
+    <string name="send">Send</string>
+    <string name="enter_username">Please enter your username</string>
+    <string name="enter_password">Please enter your password</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+
+    <string name="error_image_path">Failed to get the image path.</string>
+    <string name="error_image_upload_no_url">Error: No image URL or delete URL received.</string>
+    <string name="error_image_upload">Error uploading image: </string>
+    <string name="profile_image_updated">Profile image updated successfully.</string>
+
+    <string name="error_loading_profile">Failed to load profile data.</string>
+    <string name="logout_title">Log out</string>
+    <string name="logout_message">Are you sure you want to log out?</string>
+    <string name="logout_success">Successfully logged out.</string>
 
     <string-array name="property_types">
         <item>House</item>

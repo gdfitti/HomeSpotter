@@ -23,63 +23,56 @@ import org.uvigo.esei.example.homespotter.R;
 import org.uvigo.esei.example.homespotter.ui.fragments.MisViviendasFragment;
 import org.uvigo.esei.example.homespotter.ui.fragments.ViviendasFragment;
 
-
 /**
  * Clase ViviendaActivity
  *
- * Actividad principal que muestra una lista de viviendas disponibles en la aplicación HomeSpotter.
- * Permite interactuar con las viviendas y muestra sus detalles, fotos y estado de favorito.
- *
- * Funcionalidades principales:
- * - Mostrar una lista de viviendas obtenidas de la base de datos.
- * - Indicar si una vivienda está marcada como favorita por el usuario.
- * - Cargar fotos asociadas a cada vivienda.
- * - Botón para agregar una nueva propiedad (pendiente de implementación).
- *
- * Dependencias:
- * - Modelos: `Vivienda`.
- * - Adaptadores: `ViviendaAdapter`.
- * - Entidades: `ViviendaEntity`, `FotosEntity`, `FavoritosEntity`.
+ * Actividad principal que permite visualizar, filtrar y gestionar las viviendas
+ * disponibles en la aplicación HomeSpotter. Proporciona opciones para ver todas las
+ * propiedades o solo las asociadas al usuario actual, así como agregar nuevas propiedades.
  */
 public class ViviendaActivity extends BaseActivity {
     private int idUsuario;
 
-
     /**
-     * Método `onCreate`
-     * Configura la actividad al ser creada. Inicializa la base de datos, los adaptadores
-     * y los elementos de la interfaz gráfica.
+     * Método llamado al crear la actividad.
+     * Inicializa el menú inferior de navegación, la barra de herramientas y carga
+     * el fragmento predeterminado (ViviendasFragment) para mostrar todas las propiedades.
      *
-     * @param savedInstanceState Estado guardado de la actividad.
+     * @param savedInstanceState Estado previamente guardado de la actividad.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Recuperar el ID del usuario actual desde SharedPreferences.
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         idUsuario = sharedPreferences.getInt("user_id", -1);
-        changeBottomNavigationIcon(R.id.nav_properties,R.drawable.ic_home_selected);
+
+        // Configurar el ícono de navegación inferior para la sección de propiedades.
+        changeBottomNavigationIcon(R.id.nav_properties, R.drawable.ic_home_selected);
+
+        // Configurar la barra de herramientas.
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.property_toolbar);
         setSupportActionBar(toolbar);
 
-        // Configurar el BottomNavigationView
+        // Configurar el menú de navegación inferior.
         BottomNavigationView bottomNavigationView = findViewById(R.id.appbar_navigation);
 
-        // Cargar la sección de "Viviendas" por defecto
+        // Cargar el fragmento de "Viviendas" por defecto al iniciar la actividad.
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, ViviendasFragment.newInstance(idUsuario))
                     .commit();
         }
 
-        // Configurar listener para el BottomNavigationView
+        // Configurar los listeners para manejar los eventos de navegación en el menú inferior.
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
             if (item.getItemId() == R.id.menu_all_properties) {
-                selectedFragment = ViviendasFragment.newInstance(idUsuario); // Fragmento para todas las viviendas
-
-            }else if(item.getItemId() == R.id.menu_my_properties){
-                selectedFragment = MisViviendasFragment.newInstance(idUsuario); // Fragmento para "Mis Viviendas"
+                selectedFragment = ViviendasFragment.newInstance(idUsuario);
+            } else if (item.getItemId() == R.id.menu_my_properties) {
+                selectedFragment = MisViviendasFragment.newInstance(idUsuario);
             }
 
             if (selectedFragment != null) {
@@ -90,39 +83,59 @@ public class ViviendaActivity extends BaseActivity {
 
             return true;
         });
-
     }
 
+    /**
+     * Método que devuelve el diseño asociado a esta actividad.
+     *
+     * @return ID del recurso del diseño (R.layout.activity_viviendas).
+     */
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_viviendas;
     }
 
+    /**
+     * Crea el menú superior de opciones.
+     *
+     * @param menu El menú donde se inflarán las opciones.
+     * @return true si el menú se infló correctamente.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.filter_menu, menu);
         return true;
     }
 
+    /**
+     * Maneja las acciones seleccionadas en el menú superior.
+     *
+     * @param item El elemento del menú seleccionado.
+     * @return true si la acción fue manejada correctamente.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         if (item.getItemId() == R.id.apply_filter) {
-            showFilterDialog();
+            showFilterDialog(); // Mostrar el cuadro de diálogo para filtrar propiedades.
             return true;
-        }else if(item.getItemId() == R.id.add_propertie){
+        } else if (item.getItemId() == R.id.add_propertie) {
             Intent intent = new Intent(ViviendaActivity.this, ViviendaAddActivity.class);
-            intent.putExtra("userId", idUsuario); // Pasa el ID del usuario
+            intent.putExtra("userId", idUsuario); // Pasar el ID del usuario actual.
             startActivity(intent);
             return true;
         }
-
         return false;
     }
 
+    /**
+     * Muestra un cuadro de diálogo para filtrar las propiedades.
+     * Permite al usuario ingresar criterios como precio, título, dirección, tipo y estado.
+     */
     private void showFilterDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_filters, null);
+
+        // Inicializar los campos de texto para ingresar filtros.
         EditText minPriceEditText = dialogView.findViewById(R.id.EditText_min_price);
         EditText maxPriceEditText = dialogView.findViewById(R.id.EditText_max_price);
         EditText titleEditText = dialogView.findViewById(R.id.EditText_property_title);
@@ -130,70 +143,68 @@ public class ViviendaActivity extends BaseActivity {
         EditText typeEditText = dialogView.findViewById(R.id.EditText_property_type);
         EditText stateEditText = dialogView.findViewById(R.id.EditText_property_state);
 
+        // Configurar el diálogo.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(this.getString(R.string.filters))
-                .setView(dialogView);
-        builder.setPositiveButton(this.getString(R.string.apply), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                boolean buscar = false;
-                ContentValues filtros = new ContentValues();
+                .setView(dialogView)
+                .setPositiveButton(this.getString(R.string.apply), (dialogInterface, i) -> {
+                    ContentValues filtros = new ContentValues();
+                    boolean buscar = false;
 
-                // Procesar los campos de texto
-                if (!titleEditText.getText().toString().trim().isEmpty()) {
-                    filtros.put("titulo", titleEditText.getText().toString().trim());
-                    buscar = true;
-                }
-                if (!addressEditText.getText().toString().trim().isEmpty()) {
-                    filtros.put("direccion", addressEditText.getText().toString().trim());
-                    buscar = true;
-                }
-                if (!typeEditText.getText().toString().trim().isEmpty()) {
-                    filtros.put("tipo_vivienda", typeEditText.getText().toString().trim());
-                    buscar = true;
-                }
-                if (!stateEditText.getText().toString().trim().isEmpty()) {
-                    filtros.put("estado", stateEditText.getText().toString().trim());
-                    buscar = true;
-                }
-
-                // Procesar precios
-                Double minPrice = null, maxPrice = null;
-                try {
-                    if (!minPriceEditText.getText().toString().trim().isEmpty()) {
-                        minPrice = Double.parseDouble(minPriceEditText.getText().toString().trim());
+                    // Procesar los campos de texto y preparar los filtros.
+                    if (!titleEditText.getText().toString().trim().isEmpty()) {
+                        filtros.put("titulo", titleEditText.getText().toString().trim());
                         buscar = true;
                     }
-                    if (!maxPriceEditText.getText().toString().trim().isEmpty()) {
-                        maxPrice = Double.parseDouble(maxPriceEditText.getText().toString().trim());
+                    if (!addressEditText.getText().toString().trim().isEmpty()) {
+                        filtros.put("direccion", addressEditText.getText().toString().trim());
                         buscar = true;
                     }
-                } catch (NumberFormatException e) {
-                    Toast.makeText(ViviendaActivity.this, "Introduce un número válido en los campos de precio.", Toast.LENGTH_SHORT).show();
-                    return; // Sal del método si hay un error
-                }
+                    if (!typeEditText.getText().toString().trim().isEmpty()) {
+                        filtros.put("tipo_vivienda", typeEditText.getText().toString().trim());
+                        buscar = true;
+                    }
+                    if (!stateEditText.getText().toString().trim().isEmpty()) {
+                        filtros.put("estado", stateEditText.getText().toString().trim());
+                        buscar = true;
+                    }
 
-                // Aplicar los filtros solo si hay datos válidos
+                    // Procesar los precios.
+                    Double minPrice = null, maxPrice = null;
+                    try {
+                        if (!minPriceEditText.getText().toString().trim().isEmpty()) {
+                            minPrice = Double.parseDouble(minPriceEditText.getText().toString().trim());
+                            buscar = true;
+                        }
+                        if (!maxPriceEditText.getText().toString().trim().isEmpty()) {
+                            maxPrice = Double.parseDouble(maxPriceEditText.getText().toString().trim());
+                            buscar = true;
+                        }
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(ViviendaActivity.this, "Introduce un número válido en los campos de precio.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                if (buscar && fragment instanceof ViviendasFragment) {
-                    ((ViviendasFragment) fragment).applyFilters(filtros, minPrice, maxPrice);
-                } else {
-                    ((ViviendasFragment) fragment).cargarPropiedades();
-                }
-            }
-        });
-        builder.setNegativeButton(this.getString(R.string.cancel), null);
-        builder.create().show();
+                    // Aplicar los filtros al fragmento actual si es válido.
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                    if (buscar && fragment instanceof ViviendasFragment) {
+                        Toast.makeText(ViviendaActivity.this, "Filtro aplicado", Toast.LENGTH_SHORT).show();
+                        ((ViviendasFragment) fragment).applyFilters(filtros, minPrice, maxPrice);
+                    } else {
+                        Toast.makeText(ViviendaActivity.this, "Los campos están vacíos", Toast.LENGTH_SHORT).show();
+                        ((ViviendasFragment) fragment).cargarPropiedades();
+                    }
+                })
+                .setNegativeButton(this.getString(R.string.cancel), null)
+                .create()
+                .show();
     }
 
     /**
-     * Método `onActivityResult`
-     * Maneja los resultados de actividades lanzadas desde esta actividad. En este caso,
-     * recarga las propiedades si el resultado es exitoso.
+     * Maneja el resultado de actividades lanzadas desde esta actividad.
      *
-     * @param requestCode Código de solicitud.
-     * @param resultCode Código de resultado.
+     * @param requestCode Código de solicitud enviado.
+     * @param resultCode Código de resultado devuelto.
      * @param data Intent con datos adicionales.
      */
     @Override
@@ -204,42 +215,38 @@ public class ViviendaActivity extends BaseActivity {
             boolean isFavoriteChanged = data.getBooleanExtra("isFavoriteChanged", false);
 
             if (isFavoriteChanged) {
-                // Obtener el fragmento activo
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
                 if (currentFragment instanceof ViviendasFragment) {
-                    // Notificar al fragmento que recargue los datos
                     ((ViviendasFragment) currentFragment).cargarPropiedades();
                 }
             }
         }
     }
 
+    /**
+     * Método llamado al reanudar la actividad.
+     * Actualiza los datos según el usuario autenticado y recarga el fragmento actual si es necesario.
+     */
     @Override
     protected void onResume() {
         super.onResume();
 
-        // Obtener el usuario actual desde SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         int nuevoIdUsuario = sharedPreferences.getInt("user_id", -1);
 
-        // Si el usuario cambió, recrear el fragmento
         if (idUsuario != nuevoIdUsuario) {
             idUsuario = nuevoIdUsuario;
 
-            // Reemplazar el fragmento con el nuevo ID de usuario
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, ViviendasFragment.newInstance(idUsuario))
                     .commit();
         } else {
-            // Si el usuario no cambió, notificar al fragmento actual para recargar datos
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (currentFragment instanceof ViviendasFragment) {
                 ((ViviendasFragment) currentFragment).cargarPropiedades();
-            }else if(currentFragment instanceof MisViviendasFragment){
+            } else if (currentFragment instanceof MisViviendasFragment) {
                 ((MisViviendasFragment) currentFragment).cargarPropiedades();
             }
         }
     }
-
 }

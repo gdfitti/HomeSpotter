@@ -33,23 +33,35 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ViviendaAddActivity
+ *
+ * Esta actividad permite a los usuarios añadir una nueva vivienda a la base de datos.
+ * Los usuarios pueden ingresar detalles de la vivienda, seleccionar fotos y guardar la vivienda.
+ */
 public class ViviendaAddActivity extends AppCompatActivity {
-    private ViviendaEntity viviendaEntity;
-    private FotosEntity fotosEntity;
-    private final List<Uri> photoUris = new ArrayList<>();
-    private PhotoAdapter photoAdapter;
-    private int userId; // ID del usuario propietario
+    private ViviendaEntity viviendaEntity; // Entidad para manejar la tabla de viviendas
+    private FotosEntity fotosEntity; // Entidad para manejar la tabla de fotos
+    private final List<Uri> photoUris = new ArrayList<>(); // Lista de URIs de las fotos seleccionadas
+    private PhotoAdapter photoAdapter; // Adaptador para mostrar las fotos seleccionadas
+    private int userId; // ID del usuario propietario de la vivienda
 
+    /**
+     * Método llamado al crear la actividad.
+     * Configura la interfaz de usuario y establece los listeners para las acciones.
+     *
+     * @param savedInstanceState Estado guardado previamente (si existe).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vivienda_add);
 
-        // Configurar la base de datos
+        // Inicializar entidades de base de datos
         viviendaEntity = new ViviendaEntity(DBManager.getInstance(this).getWritableDatabase());
         fotosEntity = new FotosEntity(DBManager.getInstance(this).getWritableDatabase());
 
-        // Obtener el ID del usuario
+        // Obtener el ID del usuario desde el Intent
         userId = getIntent().getIntExtra("userId", -1);
         if (userId == -1) {
             Toast.makeText(this, "Error: Usuario no identificado.", Toast.LENGTH_SHORT).show();
@@ -66,7 +78,7 @@ public class ViviendaAddActivity extends AppCompatActivity {
         Spinner spinnerTipoVivienda = findViewById(R.id.spinner_property_type);
         Spinner spinnerEstadoVivienda = findViewById(R.id.spinner_property_state);
 
-        // Cargar opciones desde strings.xml para tipo de vivienda
+        // Configurar adaptadores para los Spinners
         ArrayAdapter<CharSequence> adapterTipo = ArrayAdapter.createFromResource(
                 this,
                 R.array.property_types,
@@ -75,7 +87,6 @@ public class ViviendaAddActivity extends AppCompatActivity {
         adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipoVivienda.setAdapter(adapterTipo);
 
-// Cargar opciones desde strings.xml para estado de vivienda
         ArrayAdapter<CharSequence> adapterEstado = ArrayAdapter.createFromResource(
                 this,
                 R.array.property_state,
@@ -84,13 +95,13 @@ public class ViviendaAddActivity extends AppCompatActivity {
         adapterEstado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEstadoVivienda.setAdapter(adapterEstado);
 
-        // Configurar RecyclerView para las fotos
+        // Configurar RecyclerView para mostrar las fotos seleccionadas
         RecyclerView recyclerView = findViewById(R.id.recycler_photos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         photoAdapter = new PhotoAdapter(photoUris);
         recyclerView.setAdapter(photoAdapter);
 
-        // Lanzador para seleccionar imágenes
+        // Lanzador para seleccionar múltiples fotos
         ActivityResultLauncher<String[]> photoPickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.OpenMultipleDocuments(),
                 uris -> {
@@ -102,16 +113,11 @@ public class ViviendaAddActivity extends AppCompatActivity {
                 }
         );
 
-        // Botón para añadir fotos
+        // Listener para el botón de añadir fotos
         Button addPhotosButton = findViewById(R.id.btn_add_photos);
-        addPhotosButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                photoPickerLauncher.launch(new String[]{"image/*"});
-            }
-        });
+        addPhotosButton.setOnClickListener(v -> photoPickerLauncher.launch(new String[]{"image/*"}));
 
-        // Botón para guardar la vivienda
+        // Listener para el botón de guardar vivienda
         Button saveButton = findViewById(R.id.btn_save_property);
         saveButton.setOnClickListener(v -> {
             String title = inputTitle.getText().toString().trim();
@@ -140,7 +146,7 @@ public class ViviendaAddActivity extends AppCompatActivity {
             if (success) {
                 int viviendaId = viviendaEntity.obtenerUltimaVivienda();
 
-                // Subir fotos y esperar a que todas estén subidas antes de finalizar
+                // Subir las fotos y guardar los enlaces en la base de datos
                 uploadPhotosToImgBB(viviendaId, () -> {
                     Toast.makeText(ViviendaAddActivity.this, "Vivienda y fotos añadidas con éxito.", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
@@ -151,32 +157,29 @@ public class ViviendaAddActivity extends AppCompatActivity {
             }
         });
 
-        // Botón para cancelar
+        // Listener para el botón de cancelar
         Button cancelButton = findViewById(R.id.btn_cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ViviendaAddActivity.this);
-                builder.setTitle(ViviendaAddActivity.this.getString(R.string.cancel))
-                        .setMessage(ViviendaAddActivity.this.getString(R.string.sure_cancel))
-                        .setPositiveButton(ViviendaAddActivity.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        });
-                builder.setNegativeButton(ViviendaAddActivity.this.getString(R.string.no), null);
-                builder.create().show();
-            }
+        cancelButton.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(this.getString(R.string.cancel))
+                    .setMessage(this.getString(R.string.sure_cancel))
+                    .setPositiveButton(this.getString(R.string.yes), (dialogInterface, i) -> finish())
+                    .setNegativeButton(this.getString(R.string.no), null)
+                    .create().show();
         });
     }
 
+    /**
+     * Sube las fotos seleccionadas a ImgBB y guarda los enlaces en la base de datos.
+     *
+     * @param viviendaId ID de la vivienda asociada.
+     * @param onComplete Callback que se ejecuta cuando todas las fotos han sido subidas.
+     */
     private void uploadPhotosToImgBB(int viviendaId, Runnable onComplete) {
         ImageUploader imageUploader = new ImageUploader();
         int totalFotos = photoUris.size();
         int[] fotosSubidas = {0};
 
-        // Mostrar el ProgressBar
         ProgressBar progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -186,10 +189,8 @@ public class ViviendaAddActivity extends AppCompatActivity {
                 imageUploader.uploadImage(file.getAbsolutePath(), new ImageUploader.UploadCallback() {
                     @Override
                     public void onSuccess(String imageUrl, String deleteUrl) {
-                        fotosEntity.insertar(viviendaId, imageUrl); // Guarda el enlace en la base de datos
+                        fotosEntity.insertar(viviendaId, imageUrl);
                         fotosSubidas[0]++;
-
-                        // Si todas las fotos han sido subidas, oculta el ProgressBar y ejecuta el callback
                         if (fotosSubidas[0] == totalFotos) {
                             progressBar.setVisibility(View.GONE);
                             onComplete.run();
@@ -200,7 +201,6 @@ public class ViviendaAddActivity extends AppCompatActivity {
                     public void onError(String error) {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(ViviendaAddActivity.this, "Error al subir una foto: " + error, Toast.LENGTH_SHORT).show();
-                        Log.e("ViviendaAddActivity.uploadPhotosToImgBB","Error al subir una(s) foto(s) al servidor: "+error);
                     }
                 });
             } catch (IOException e) {
@@ -210,12 +210,17 @@ public class ViviendaAddActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Convierte un URI en un archivo temporal.
+     *
+     * @param uri URI de la imagen.
+     * @return Archivo temporal con los datos de la imagen.
+     * @throws IOException Si ocurre un error al procesar el URI.
+     */
     private File getFileFromUri(Uri uri) throws IOException {
-        // Crear un archivo temporal
         File tempFile = File.createTempFile("temp_image", ".jpg", getCacheDir());
         tempFile.deleteOnExit();
 
-        // Usar ContentResolver para leer los datos del Uri
         try (InputStream inputStream = getContentResolver().openInputStream(uri);
              FileOutputStream outputStream = new FileOutputStream(tempFile)) {
             if (inputStream == null) {
@@ -227,7 +232,6 @@ public class ViviendaAddActivity extends AppCompatActivity {
                 outputStream.write(buffer, 0, bytesRead);
             }
         }
-
         return tempFile;
     }
 }

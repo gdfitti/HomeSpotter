@@ -6,6 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.uvigo.esei.example.homespotter.models.Vivienda;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -253,12 +255,23 @@ public class ViviendaEntity {
         );
     }
 
+    /**
+     * Realiza una búsqueda de las viviendas que tiene un propietario.
+     *
+     * @param idPropietario id del propietario de la vivienda si existe.
+     * @return Cursor con los resultados de la búsqueda.
+     */
     public Cursor buscarPorPropietario(int idPropietario) {
         String query = "SELECT * FROM TABLA_VIVIENDA WHERE propietario_id = ?";
         String[] selectionArgs = new String[]{String.valueOf(idPropietario)};
         return db.rawQuery(query, selectionArgs);
     }
 
+    /**
+     * Busca la última vivienda registrada y devuelve su id.
+     *
+     * @return Id de la última vivienda añadida a la base de dato.
+     */
     public int obtenerUltimaVivienda(){
         int ultimoId = -1;
         Cursor cursor = null;
@@ -279,6 +292,4 @@ public class ViviendaEntity {
 
         return ultimoId;
     }
-
-
 }

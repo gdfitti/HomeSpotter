@@ -32,22 +32,41 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 
+/**
+ * ModifyProfileActivity
+ *
+ * Esta actividad permite al usuario modificar su perfil, incluyendo nombre, usuario,
+ * correo electrónico, contraseña, teléfono y foto de perfil.
+ *
+ * Funcionalidades principales:
+ * - Cargar los datos del perfil desde la base de datos.
+ * - Permitir la edición y actualización de los datos del perfil.
+ * - Subir una nueva imagen de perfil usando ImgBB.
+ */
 public class ModifyProfileActivity extends AppCompatActivity {
     private static final String TAG = "ModifyProfileActivity";
+
+    // Elementos de la interfaz de usuario
     private EditText fullnameEditText;
     private EditText usernameEditText;
     private EditText emailEditText;
     private EditText tlfnoEditText; // EditText para teléfono
     private EditText passwordEditText;
     private ImageView profileImageView;
+
+    // Clase para manejar la subida de imágenes
     private ImageUploader imageUploader;
+
+    // URL de la imagen actual y nueva
     private String deleteUrl = null;
     private String newImageUrl = null;
+    private String currentImageUrl = null;
 
+    // Entidades de base de datos y preferencias compartidas
     private SharedPreferences sharedPreferences;
     private UsuarioEntity usuarios;
 
-    private String currentImageUrl = null;
+    // ActivityResultLauncher para seleccionar imágenes
     private final ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             uri -> {
@@ -57,62 +76,70 @@ public class ModifyProfileActivity extends AppCompatActivity {
                         uploadImageToImgBB(imagePath);
                     } else {
                         Log.e(TAG, "Failed to get image path.");
-                        Toast.makeText(this, "No se pudo obtener la ruta de la imagen.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, this.getString(R.string.error_image_path), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
     );
+
+    /**
+     * Método llamado al crear la actividad.
+     * Configura la interfaz, carga los datos del perfil y establece los listeners de los botones.
+     *
+     * @param savedInstanceState Estado guardado previamente (si existe).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modify_profile); // Asegúrate de tener el layout correcto
+        setContentView(R.layout.activity_modify_profile);
 
-        // Inicializar los componentes de la UI
+        // Inicializar los elementos de la UI
         fullnameEditText = findViewById(R.id.fullname);
         usernameEditText = findViewById(R.id.username);
         emailEditText = findViewById(R.id.email);
-        tlfnoEditText = findViewById(R.id.tlfno); // EditText para teléfono
+        tlfnoEditText = findViewById(R.id.tlfno);
         passwordEditText = findViewById(R.id.password);
         profileImageView = findViewById(R.id.profile_image);
+
         CheckBox showPasswordCheckBox = findViewById(R.id.checkbox_show_password);
         Button saveChangesButton = findViewById(R.id.btn_save);
         Button cancelButton = findViewById(R.id.btn_cancel);
         Button changePhotoButton = findViewById(R.id.btn_replace_photo);
+
         imageUploader = new ImageUploader();
 
-        // Inicializar SharedPreferences y DB
+        // Inicializar SharedPreferences y base de datos
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         usuarios = new UsuarioEntity(DBManager.getInstance(this).getWritableDatabase());
 
-        // Cargar los datos del perfil en los campos de edición
+        // Cargar los datos del perfil
         loadProfileData();
 
-        // Guardar los cambios cuando el usuario haga clic en "Guardar cambios"
+        // Listener para guardar los cambios
         saveChangesButton.setOnClickListener(v -> saveProfileChanges());
 
-        // Volver a la pantalla anterior sin guardar cambios
+        // Listener para cancelar y cerrar la actividad
         cancelButton.setOnClickListener(v -> finish());
 
+        // Listener para mostrar/ocultar contraseña
         showPasswordCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                // Si el checkbox está marcado, se muestra la contraseña
                 passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
             } else {
-                // Si no está marcado, la contraseña se oculta (en forma de puntos)
                 passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             }
-
-            // Mover el cursor al final del texto después de cambiar el tipo de input
             passwordEditText.setSelection(passwordEditText.getText().length());
         });
 
+        // Listener para cambiar la foto de perfil
         changePhotoButton.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
     }
 
+    /**
+     * Carga los datos del perfil desde la base de datos y los muestra en la interfaz.
+     */
     private void loadProfileData() {
         int userId = sharedPreferences.getInt("user_id", -1);
-        Log.d(TAG, "Loading profile data for userId: " + userId);
-
         if (userId == -1) {
             Log.e(TAG, "Invalid userId.");
             return;
@@ -123,71 +150,65 @@ public class ModifyProfileActivity extends AppCompatActivity {
         Cursor cursor = usuarios.buscar(filters);
 
         if (cursor != null && cursor.moveToFirst()) {
-            String fullname = cursor.getString(cursor.getColumnIndexOrThrow("nombre_completo"));
-            String username = cursor.getString(cursor.getColumnIndexOrThrow("nombre_usuario"));
-            String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
-            String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-            String tlfno = cursor.getString(cursor.getColumnIndexOrThrow("tlfno")); // Cargar teléfono
-            currentImageUrl = cursor.getString(cursor.getColumnIndexOrThrow("foto_perfil")); // Cargar teléfono
-            deleteUrl = cursor.getString(cursor.getColumnIndexOrThrow("delete_url"));
-            Log.d(TAG, "Profile loaded: fullname=" + fullname + ", username=" + username + ", email=" + email);
-
-            fullnameEditText.setText(fullname);
-            usernameEditText.setText(username);
-            emailEditText.setText(email);
-            tlfnoEditText.setText(tlfno); // Mostrar teléfono en EditText
-            passwordEditText.setText(password);
+            fullnameEditText.setText(cursor.getString(cursor.getColumnIndexOrThrow("nombre_completo")));
+            usernameEditText.setText(cursor.getString(cursor.getColumnIndexOrThrow("nombre_usuario")));
+            emailEditText.setText(cursor.getString(cursor.getColumnIndexOrThrow("email")));
+            tlfnoEditText.setText(cursor.getString(cursor.getColumnIndexOrThrow("tlfno")));
+            passwordEditText.setText(cursor.getString(cursor.getColumnIndexOrThrow("password")));
+            currentImageUrl = cursor.getString(cursor.getColumnIndexOrThrow("foto_perfil"));
 
             if (currentImageUrl != null && !currentImageUrl.isEmpty()) {
                 Glide.with(this)
                         .load(currentImageUrl)
-                        .placeholder(R.drawable.ic_profile_default) // Imagen de carga predeterminada// Imagen en caso de error// Recorte en forma de círculo
-                        .into(profileImageView); // Tu ImageView para la foto de perfil
+                        .placeholder(R.drawable.ic_profile_default)
+                        .into(profileImageView);
             } else {
-                profileImageView.setImageResource(R.drawable.ic_profile_default); // Imagen por defecto
+                profileImageView.setImageResource(R.drawable.ic_profile_default);
             }
             cursor.close();
         } else {
-            Log.e(TAG, "Failed to load profile data.");
-            Toast.makeText(ModifyProfileActivity.this, this.getString(R.string.error_profile_charging), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, this.getString(R.string.error_profile_charging), Toast.LENGTH_SHORT).show();
         }
     }
+
+    /**
+     * Sube la imagen seleccionada a ImgBB.
+     *
+     * @param imagePath Ruta de la imagen seleccionada.
+     */
     private void uploadImageToImgBB(String imagePath) {
-        Log.d(TAG, "Uploading image to ImgBB: " + imagePath);
         imageUploader.uploadImage(imagePath, new ImageUploader.UploadCallback() {
             @Override
             public void onSuccess(String imageUrl, String deleteUrl) {
-                if (imageUrl != null && deleteUrl != null) {
-                    updateProfileImage(imageUrl);
-                } else {
-                    Toast.makeText(ModifyProfileActivity.this, "Error: No se recibió la URL de la imagen o deleteUrl.", Toast.LENGTH_SHORT).show();
-                }
+                updateProfileImage(imageUrl);
             }
 
             @Override
             public void onError(String error) {
-                Log.e(TAG, "Error uploading image: " + error);
-                Toast.makeText(ModifyProfileActivity.this, "Error al subir la imagen: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ModifyProfileActivity.this, "Error al suvir la foto", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * Actualiza la imagen de perfil en la interfaz.
+     *
+     * @param imageUrl URL de la nueva imagen.
+     */
     private void updateProfileImage(String imageUrl) {
-        Log.d(TAG, "Updating profile image: imageUrl=" + imageUrl + ", deleteUrl=" + deleteUrl);
-
         currentImageUrl = imageUrl;
-
-        // Mostrar la nueva imagen
         Glide.with(this).load(currentImageUrl).into(profileImageView);
-        Toast.makeText(this, "Imagen de perfil actualizada.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, this.getString(R.string.profile_image_updated), Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Guarda los cambios realizados en el perfil en la base de datos.
+     */
     private void saveProfileChanges() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(this.getString(R.string.confirm_modifications))
                 .setMessage(this.getString(R.string.modifications_message))
                 .setPositiveButton(this.getString(R.string.yes), (dialog, which) -> {
-                    Log.d(TAG, "Saving profile changes.");
                     String newFullname = fullnameEditText.getText().toString().trim();
                     String newUsername = usernameEditText.getText().toString().trim();
                     String newEmail = emailEditText.getText().toString().trim();
@@ -224,15 +245,19 @@ public class ModifyProfileActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Obtiene la ruta real de un URI de contenido.
+     *
+     * @param contentUri URI del contenido.
+     * @return Ruta absoluta del archivo, o null si falla.
+     */
     private String getRealPathFromURI(Uri contentUri) {
         try {
-            // Crear un archivo temporal en el almacenamiento externo
             File tempFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "temp_image.jpg");
             ContentResolver resolver = getContentResolver();
             InputStream inputStream = resolver.openInputStream(contentUri);
             OutputStream outputStream = Files.newOutputStream(tempFile.toPath());
 
-            // Copiar los datos del InputStream al archivo temporal
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -242,10 +267,9 @@ public class ModifyProfileActivity extends AppCompatActivity {
             inputStream.close();
             outputStream.close();
 
-            return tempFile.getAbsolutePath(); // Ruta del archivo temporal
+            return tempFile.getAbsolutePath();
         } catch (Exception e) {
             return null;
         }
     }
-
 }

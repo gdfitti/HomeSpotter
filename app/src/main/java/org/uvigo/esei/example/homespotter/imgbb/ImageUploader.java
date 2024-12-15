@@ -80,50 +80,5 @@ public class ImageUploader {
         });
     }
 
-    /**
-     * Elimina una imagen del servicio ImgBB.
-     *
-     * @param deleteUrl URL de la imagen que se desea eliminar.
-     * @param callback Callback para indicar si la eliminación fue exitosa o no.
-     */
-    public void deleteImage(String deleteUrl, DeleteCallback callback) {
-        String deleteHash = extractDeleteHash(deleteUrl);
-        if (deleteHash == null) {
-            Log.e("ImageUploader.deleteImage", "El deleteHash no se pudo extraer de la URL: " + deleteUrl);
-            callback.onComplete(false);
-            return;
-        }
-
-        ImgBBApi apiService = RetrofitClient.getRetrofitInstance().create(ImgBBApi.class);
-        Call<Void> call = apiService.deleteImage("h9vmr9k/ae63587128763104d6cb1679e3962da7", API_KEY);
-
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.d("ImageUploader.deleteImage", "Imagen eliminada correctamente. DeleteHash: " + deleteHash);
-                    callback.onComplete(true);
-                } else {
-                    Log.e("ImageUploader.deleteImage", "Error al eliminar imagen. Código: " + response.code() + ", Mensaje: " + response.message());
-                    Log.e("ImageUploader.deleteImage", "Cuerpo de la respuesta: " + response.errorBody());
-                    callback.onComplete(false);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("ImageUploader.deleteImage", "Error al realizar la solicitud de eliminación: " + t.getMessage());
-                callback.onComplete(false);
-            }
-        });
-    }
-
-    public String extractDeleteHash(String deleteUrl) {
-        if (deleteUrl != null && deleteUrl.contains("/")) {
-            return deleteUrl.substring(deleteUrl.lastIndexOf("/") + 1);
-        }
-        return null;
-    }
-
 }
 

@@ -8,4 +8,8 @@
     <color name="primary">#00796B</color>
     <color name="splash_background_color">#E33077</color>
     <color name="splash_background">#00E33077</color>
+    <color name="message_green">#1e8449</color>
+    <color name="fecha_grey">#8696A0</color>
+    <color name="dark_gray">#424949</color>
+    <color name="light_gray">#B0B0B0</color>
 </resources>

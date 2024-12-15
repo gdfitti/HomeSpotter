@@ -5,52 +5,54 @@ import java.util.List;
 /**
  * Clase Vivienda
  *
- * Representa un modelo de vivienda en la aplicación HomeSpotter.
- * Esta clase encapsula los detalles de una propiedad, como su tipo, precio,
- * ubicación, estado, propietario, estado de favorito y fotos asociadas.
- *
- * Atributos:
- * - `id`: Identificador único de la vivienda.
- * - `tipoVivienda`: Tipo de vivienda (ej., casa, apartamento).
- * - `titulo`: Título breve que describe la vivienda.
- * - `precio`: Precio de la vivienda.
- * - `direccion`: Dirección de la vivienda.
- * - `estado`: Estado de la vivienda (disponible, ocupado, etc.).
- * - `contacto`: Información de contacto del propietario o encargado.
- * - `descripcion`: Descripción detallada de la vivienda.
- * - `propietarioId`: Identificador del propietario de la vivienda.
- * - `favorite`: Indica si la vivienda está marcada como favorita por el usuario.
- * - `fotos`: Lista de URLs de fotos asociadas a la vivienda.
- *
- * Constructores:
- * - Vivienda(int id, String titulo, String tipoVivienda, ...): Constructor completo.
- * - Vivienda(String tipoVivienda, String titulo, ...): Constructor sin ID, útil para nuevas propiedades.
- *
- * Métodos principales:
- * - Getters y setters para todos los atributos.
+ * Modelo que representa una vivienda en la aplicación HomeSpotter.
+ * Contiene información detallada sobre una propiedad, como su tipo, precio,
+ * ubicación, estado, propietario, fotos asociadas y si es favorita.
  */
 public class Vivienda {
+
+    // Identificador único de la vivienda
     private int id;
+
+    // Tipo de la vivienda (ej., casa, apartamento)
     private String tipoVivienda;
+
+    // Título breve que describe la vivienda
     private String titulo;
+
+    // Precio de la vivienda
     private double precio;
+
+    // Dirección de la vivienda
     private String direccion;
+
+    // Estado actual de la vivienda (disponible, ocupado, etc.)
     private String estado;
+
+    // Información de contacto del propietario o encargado
     private String contacto;
+
+    // Descripción detallada de la vivienda
     private String descripcion;
+
+    // Identificador del propietario de la vivienda
     private int propietarioId;
+
+    // Indica si la vivienda está marcada como favorita por el usuario actual
     private boolean favorite;
-    private List<String> fotos; // URL de la imagen
+
+    // Lista de URLs de fotos asociadas a la vivienda
+    private List<String> fotos;
 
     /**
      * Constructor completo.
      *
      * @param id Identificador único de la vivienda.
-     * @param titulo Título de la vivienda.
-     * @param tipoVivienda Tipo de la vivienda (casa, apartamento, etc.).
+     * @param titulo Título breve de la vivienda.
+     * @param tipoVivienda Tipo de la vivienda (ej., casa, apartamento).
      * @param precio Precio de la vivienda.
      * @param direccion Dirección de la vivienda.
-     * @param estado Estado actual de la vivienda (disponible, ocupado, etc.).
+     * @param estado Estado actual de la vivienda.
      * @param contacto Información de contacto del propietario o encargado.
      * @param descripcion Descripción detallada de la vivienda.
      * @param propietarioId ID del propietario de la vivienda.
@@ -73,14 +75,15 @@ public class Vivienda {
 
     /**
      * Constructor para nuevas propiedades (sin ID).
+     * Útil para crear viviendas antes de guardarlas en la base de datos.
      *
      * @param tipoVivienda Tipo de la vivienda.
      * @param titulo Título de la vivienda.
      * @param precio Precio de la vivienda.
      * @param direccion Dirección de la vivienda.
      * @param estado Estado actual de la vivienda.
-     * @param contacto Información de contacto.
-     * @param descripcion Descripción detallada.
+     * @param contacto Información de contacto del propietario o encargado.
+     * @param descripcion Descripción detallada de la vivienda.
      * @param propietarioId ID del propietario de la vivienda.
      * @param fotoUrl Lista de URLs de fotos asociadas.
      */
@@ -96,7 +99,8 @@ public class Vivienda {
         this.fotos = fotoUrl;
     }
 
-    // Getters y Setters
+    // Métodos Getters y Setters para acceder y modificar los atributos
+
     public int getId() {
         return id;
     }

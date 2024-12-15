@@ -6,6 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.uvigo.esei.example.homespotter.models.Usuario;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -285,6 +287,50 @@ public class UsuarioEntity{
     }
 
     /**
+     * Obtiene un usuario de la base de datos por su ID.
+     *
+     * @param id_usuario ID del usuario a buscar.
+     * @return Un objeto {@link Usuario} si se encuentra un usuario con el ID especificado; de lo contrario, devuelve null.
+     */
+    public Usuario obtenerUsuarioPorId(int id_usuario) {
+        Usuario usuario = null;
+        Cursor cursor = null;
+
+        try {
+            // Consulta para obtener los datos del usuario por su ID
+            cursor = db.query(
+                    NOMBRE_TABLA,
+                    new String[]{COL_ID_USUARIO, COL_NOMBRE_USUARIO, COL_EMAIL, COL_PASSWRD, COL_FOTO, "tlfno"},
+                    COL_ID_USUARIO + " = ?",
+                    new String[]{String.valueOf(id_usuario)},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                // Crear el objeto Usuario con los datos obtenidos
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COL_ID_USUARIO));
+                String nombreUsuario = cursor.getString(cursor.getColumnIndexOrThrow(COL_NOMBRE_USUARIO));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow(COL_EMAIL));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow(COL_PASSWRD));
+                String foto = cursor.getString(cursor.getColumnIndexOrThrow(COL_FOTO));
+                String tlfno = cursor.getString(cursor.getColumnIndexOrThrow("tlfno"));
+
+                usuario = new Usuario(id, nombreUsuario, email, password, foto, tlfno);
+            }
+        } catch (SQLException e) {
+            Log.e("UsuarioEntity", "Error al obtener usuario por ID: " + e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return usuario;
+    }
+
+    /**
      * Construye un objeto ContentValues con los datos de un usuario.
      *
      * @param nombre Nombre del usuario.
@@ -306,4 +352,6 @@ public class UsuarioEntity{
 
         return values;
     }
+
+
 }

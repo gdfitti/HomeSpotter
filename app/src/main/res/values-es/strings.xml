@@ -99,8 +99,29 @@
     <string name="user_not_logged">Error, Inicia Sesión para añadir a favoritos</string>
     <string name="register_now">¿Aún no estas registrado? ¡Hazlo ahora!</string>
 
+    <string name="missing_chats">Chats Perdidos...</string>
+    <string name="send_message">Enviar Mensaje</string>
+    <string name="send">Enviar</string>
+
+    <string name="favorites_tittle">Favorite Properties:</string>
+
     <string name="yes">Si</string>
     <string name="no">No</string>
+    <string name="enter_username">Por favor ingresa tu nombre de usuario</string>
+    <string name="enter_password">Por favor ingresa tu contraseña</string>
+    <string name="invalid_credentials">Credenciales incorrectas</string>
+
+    <string name="error_image_path">No se pudo obtener la ruta de la imagen.</string>
+    <string name="error_image_upload_no_url">Error: No se recibió la URL de la imagen o deleteUrl.</string>
+    <string name="error_image_upload">Error al subir la imagen: </string>
+    <string name="profile_image_updated">Imagen de perfil actualizada correctamente.</string>
+
+    <string name="error_loading_profile">No se pudo cargar el perfil.</string>
+    <string name="logout_title">Cerrar sesión</string>
+    <string name="logout_message">¿Estás seguro de que quieres cerrar sesión?</string>
+    <string name="logout_success">Sesión cerrada correctamente.</string>
+
+
     <string-array name="property_types">
         <item>Casa</item>
         <item>Apartamento</item>

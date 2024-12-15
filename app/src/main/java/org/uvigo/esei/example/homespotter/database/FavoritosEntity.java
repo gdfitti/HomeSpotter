@@ -9,16 +9,37 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase FavoritosEntity
+ *
+ * Gestiona las operaciones CRUD relacionadas con la tabla de favoritos
+ * en la base de datos. Permite agregar, eliminar y obtener los favoritos
+ * de los usuarios.
+ */
 public class FavoritosEntity {
     private SQLiteDatabase db;
+
+    // Nombre de la tabla y columnas
     private static final String NOMBRE_TABLA = "TABLA_FAVORITOS";
     private static final String COL_ID_USUARIO = "usuario_id";
     private static final String COL_ID_VIVIENDA = "vivienda_id";
 
-    public FavoritosEntity(SQLiteDatabase db){
+    /**
+     * Constructor de la clase.
+     *
+     * @param db Base de datos SQLite para realizar las operaciones.
+     */
+    public FavoritosEntity(SQLiteDatabase db) {
         this.db = db;
     }
 
+    /**
+     * Inserta un nuevo favorito en la tabla de favoritos.
+     *
+     * @param usuarioId ID del usuario.
+     * @param viviendaId ID de la vivienda.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public boolean insertar(int usuarioId, int viviendaId) {
         boolean toret = false;
 
@@ -27,17 +48,16 @@ public class FavoritosEntity {
             return false;
         }
 
-        // Verificar si ya existe
+        // Verificar si ya existe el favorito
         Cursor cursor = db.query(
-                "TABLA_FAVORITOS",
-                new String[]{"usuario_id", "vivienda_id"},
-                "usuario_id = ? AND vivienda_id = ?",
+                NOMBRE_TABLA,
+                new String[]{COL_ID_USUARIO, COL_ID_VIVIENDA},
+                COL_ID_USUARIO + " = ? AND " + COL_ID_VIVIENDA + " = ?",
                 new String[]{String.valueOf(usuarioId), String.valueOf(viviendaId)},
                 null, null, null
         );
 
         if (cursor != null && cursor.getCount() > 0) {
-            // El registro ya existe
             Log.i("FavoritosEntity.insertar", "El registro ya existe: usuario_id = " + usuarioId + ", vivienda_id = " + viviendaId);
             cursor.close();
             return false;
@@ -47,14 +67,14 @@ public class FavoritosEntity {
             cursor.close();
         }
 
-        // Insertar si no existe
+        // Insertar el favorito si no existe
         ContentValues values = new ContentValues();
-        values.put("usuario_id", usuarioId);
-        values.put("vivienda_id", viviendaId);
+        values.put(COL_ID_USUARIO, usuarioId);
+        values.put(COL_ID_VIVIENDA, viviendaId);
 
         try {
             db.beginTransaction();
-            db.insert("TABLA_FAVORITOS", null, values);
+            db.insert(NOMBRE_TABLA, null, values);
             db.setTransactionSuccessful();
             toret = true;
         } catch (SQLException exc) {
@@ -66,31 +86,44 @@ public class FavoritosEntity {
         return toret;
     }
 
-    public boolean eliminar(int id_usuario, int id_vivienda){
+    /**
+     * Elimina un favorito de la tabla.
+     *
+     * @param id_usuario ID del usuario.
+     * @param id_vivienda ID de la vivienda.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
+    public boolean eliminar(int id_usuario, int id_vivienda) {
         boolean toret = false;
 
-        try{
+        try {
             db.beginTransaction();
             int filasEliminadas = db.delete(
                     NOMBRE_TABLA,
-                    "usuario_ID = ? AND vivienda_id = ?",
-                    new String[]{String.valueOf(id_usuario),String.valueOf(id_vivienda)}
+                    COL_ID_USUARIO + " = ? AND " + COL_ID_VIVIENDA + " = ?",
+                    new String[]{String.valueOf(id_usuario), String.valueOf(id_vivienda)}
             );
 
-            if(filasEliminadas == 0){
-                Log.e("FavoritosEntity.eliminar", "Error al eliminar el favorito con id: " + id_usuario + id_vivienda);
-            }else{
+            if (filasEliminadas == 0) {
+                Log.e("FavoritosEntity.eliminar", "Error al eliminar el favorito con id: " + id_usuario + ", " + id_vivienda);
+            } else {
                 db.setTransactionSuccessful();
                 toret = true;
             }
-        }catch (SQLException exc){
-            Log.e("FavoritosEntity.eliminar", "Error en eliminar la tupla");
-        }finally {
+        } catch (SQLException exc) {
+            Log.e("FavoritosEntity.eliminar", "Error en eliminar la tupla: " + exc.getMessage());
+        } finally {
             db.endTransaction();
         }
         return toret;
     }
 
+    /**
+     * Obtiene una lista de IDs de viviendas favoritas para un usuario específico.
+     *
+     * @param id_usuario ID del usuario.
+     * @return Lista de IDs de viviendas favoritas del usuario.
+     */
     public List<Integer> obtenerFavoritosPorUsuario(int id_usuario) {
         List<Integer> listaFavoritos = new ArrayList<>();
 
