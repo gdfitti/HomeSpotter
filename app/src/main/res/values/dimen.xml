@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width_content_start">300dp</dimen>
+    <dimen name="icono_sistema">50dp</dimen>
+    <dimen name="margenLeftM">16dp</dimen>
+    <dimen name="margenRightM">16dp</dimen>
+    <dimen name="margenTopM">10dp</dimen>
+    <dimen name="margenBottomM">10dp</dimen>
+    <dimen name="peso_pre">1</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+
+    <dimen name="paddingBalloonEsqLeft">30dp</dimen>
+    <dimen name="paddingBalloonEsqRight">10dp</dimen>
+    <dimen name="paddingBalloonEsqTop">5dp</dimen>
+    <dimen name="paddingBalloonEsqBottom">5dp</dimen>
+
+    <dimen name="paddingBalloonDirLeft">10dp</dimen>
+    <dimen name="paddingBalloonDirRight">30dp</dimen>
+    <dimen name="paddingBalloonDirTop">5dp</dimen>
+    <dimen name="paddingBalloonDirBottom">5dp</dimen>
+
+    <dimen name="margenBalloonBottom">10dp</dimen>
+    <dimen name="size_bt_enviar">56dp</dimen>
+
+    <dimen name="text_size_chat">16sp</dimen>
+    <dimen name="padding_box_sistemas">20dp</dimen>
+
+    <dimen name="margenRightChat">30dp</dimen>
+    <dimen name="margenLeftChat">30dp</dimen>
+</resources>
