@@ -110,12 +110,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register" />
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="¡Gracias por registrarte en nuestra App!"
+            android:text="@string/thanks"
             android:textSize="14sp"
             android:textAlignment="center"
             android:id="@+id/signupText"

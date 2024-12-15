@@ -27,7 +27,7 @@
     <string name="state">Estado de la Vivienda</string>
     <string name="contact">Contacto</string>
     <string name="description">Descripción</string>
-    <string name="addPhotos">Subir Fotos</string>
+    <string name="addPhotos">Subir Foto</string>
     <string name="upload">Subir</string>
     <string name="back">Volver Atrás</string>
 
@@ -76,6 +76,13 @@
     <string name="show_password_checkbox">Show Password</string>
     <string name="modify_profile_text">Guardar Perfil</string>
 
+    <string name="confirm_modifications">Confirmar modificación</string>
+    <string name="modifications_message">¿Estás seguro de que quieres guardar los cambios en tu perfil?</string>
+    <string name="fill">Por favor, completa todos los campos</string>
+    <string name="profile_updated">Perfil actualizado correctamente</string>
+    <string name="error_profile_update">Error al actualizar el perfil</string>
+    <string name="error_profile_charging">No se pudo cargar los datos del perfil</string>
+    <string name="replace_photo">Cambiar Foto</string>
 
     <string name="welcome_app">¡Bienvenido nuevo usuario!</string>
     <string name="welcome_again_app">¡Bienvenido de nuevo!</string>
@@ -83,12 +90,17 @@
     <string name="btnLogin">Acceder</string>
     <string name="btnRegister">Registrarse</string>
     <string name="btnSaveProfile">Guardar Perfil</string>
+    <string name="thanks">¡Gracias por utilizar nuestra App!</string>
     <string name="btnModify">Modificar Perfil</string>btnLogout
     <string name="btnLogout">Cerrar Sesión</string>
     <string name="btnCancelModify">Cancelar</string>
 
     <string name="register">Registrarse</string>
     <string name="user_not_logged">Error, Inicia Sesión para añadir a favoritos</string>
+    <string name="register_now">¿Aún no estas registrado? ¡Hazlo ahora!</string>
+
+    <string name="yes">Si</string>
+    <string name="no">No</string>
     <string-array name="property_types">
         <item>Casa</item>
         <item>Apartamento</item>

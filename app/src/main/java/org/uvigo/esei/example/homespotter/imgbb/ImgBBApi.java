@@ -1,10 +1,13 @@
 package org.uvigo.esei.example.homespotter.imgbb;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import okhttp3.MultipartBody;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Interfaz ImgBBApi
@@ -46,5 +49,11 @@ public interface ImgBBApi {
     Call<ImgBBResponse> uploadImage(
             @Part("key") okhttp3.RequestBody apiKey,
             @Part MultipartBody.Part image
+    );
+
+    @DELETE("1/image/{deleteHash}")
+    Call<Void> deleteImage(
+            @Path("deleteHash") String deleteHash,
+            @Query("key") String apiKey
     );
 }

@@ -58,9 +58,15 @@
                 android:scaleType="centerCrop"
                 android:clipToOutline="true"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/circle_background"
+                android:background="@drawable/circle_profile_background"
                 android:contentDescription="TODO" />
 
+            <Button
+                android:id="@+id/btn_replace_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/replace_photo"
+                android:layout_marginTop="16dp" />
             <TextView
                 android:id="@+id/fullnamedata"
                 android:layout_width="match_parent"

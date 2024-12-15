@@ -96,7 +96,6 @@
             android:layout_height="24dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
-            android:inputType="text"
             android:text="@string/email_text"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -107,7 +106,6 @@
             android:background="@drawable/custom_textview"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:inputType="textEmailAddress"
             android:padding="8dp"
             tools:ignore="SpeakableTextPresentCheck" />
 
@@ -117,7 +115,6 @@
             android:layout_height="24dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
-            android:inputType="text"
             android:text="@string/tlfno_text"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -136,7 +133,6 @@
             android:layout_height="24dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
-            android:inputType="text"
             android:text="@string/password_text"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -147,7 +143,6 @@
             android:background="@drawable/custom_textview"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:inputType="textPassword"
             android:padding="8dp"
             tools:ignore="SpeakableTextPresentCheck" />
 
@@ -175,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="¡Gracias por utilizar nuestra App!"
+            android:text="@string/thanks"
             android:textSize="14sp"
             android:textAlignment="center"
             android:id="@+id/signupText"

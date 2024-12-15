@@ -19,6 +19,9 @@ import org.uvigo.esei.example.homespotter.R;
 import org.uvigo.esei.example.homespotter.database.DBManager;
 import org.uvigo.esei.example.homespotter.database.UsuarioEntity;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class PerfilActivity extends BaseActivity {
 
     private TextView fullnameTextView;
@@ -34,6 +37,7 @@ public class PerfilActivity extends BaseActivity {
     private SharedPreferences sharedPreferences;
     private UsuarioEntity usuarios;
 
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,37 +90,45 @@ public class PerfilActivity extends BaseActivity {
             return;
         }
 
-        ContentValues filters = new ContentValues();
-        filters.put("id_usuario", userId);
-        Cursor cursor = usuarios.buscar(filters);
+        // Ejecutar la tarea en un hilo de fondo
+        executorService.execute(() -> {
+            ContentValues filters = new ContentValues();
+            filters.put("id_usuario", userId);
+            Cursor cursor = usuarios.buscar(filters);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            String fullname = cursor.getString(cursor.getColumnIndexOrThrow("nombre_completo"));
-            String username = cursor.getString(cursor.getColumnIndexOrThrow("nombre_usuario"));
-            String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
-            String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-            String tlfno = cursor.getString(cursor.getColumnIndexOrThrow("tlfno")); // Cargar teléfono
-            String profile = cursor.getString(cursor.getColumnIndexOrThrow("foto_perfil")); // Cargar teléfono
+            if (cursor != null && cursor.moveToFirst()) {
+                String fullname = cursor.getString(cursor.getColumnIndexOrThrow("nombre_completo"));
+                String username = cursor.getString(cursor.getColumnIndexOrThrow("nombre_usuario"));
+                String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+                String tlfno = cursor.getString(cursor.getColumnIndexOrThrow("tlfno"));
+                String profile = cursor.getString(cursor.getColumnIndexOrThrow("foto_perfil"));
 
-            // Mostrar los datos en los TextViews
-            fullnameTextView.setText(fullname);
-            usernameTextView.setText(username);
-            emailTextView.setText(email);
-            tlfnoTextView.setText(tlfno); // Mostrar teléfono
-            passwordTextView.setText(password); // Se puede ocultar en caso necesario
+                cursor.close();
 
-            if (profile != null && !profile.isEmpty()) {
-                Glide.with(this)
-                        .load(profile)
-                        .placeholder(R.drawable.ic_profile_default) // Imagen de carga predeterminada// Imagen en caso de error// Recorte en forma de círculo
-                        .into(profileImageView); // Tu ImageView para la foto de perfil
+                // Actualizar la UI en el hilo principal
+                runOnUiThread(() -> {
+                    fullnameTextView.setText(fullname);
+                    usernameTextView.setText(username);
+                    emailTextView.setText(email);
+                    tlfnoTextView.setText(tlfno);
+                    passwordTextView.setText(password);
+
+                    if (profile != null && !profile.isEmpty()) {
+                        Glide.with(this)
+                                .load(profile)
+                                .placeholder(R.drawable.ic_profile_default)
+                                .into(profileImageView);
+                    } else {
+                        profileImageView.setImageResource(R.drawable.ic_profile_default);
+                    }
+                });
             } else {
-                profileImageView.setImageResource(R.drawable.ic_profile_default); // Imagen por defecto
+                runOnUiThread(() ->
+                        Toast.makeText(PerfilActivity.this, "No se pudo cargar el perfil", Toast.LENGTH_SHORT).show()
+                );
             }
-            cursor.close();
-        } else {
-            Toast.makeText(PerfilActivity.this, "No se pudo cargar el perfil", Toast.LENGTH_SHORT).show();
-        }
+        });
     }
 
     @Override
@@ -169,6 +181,20 @@ public class PerfilActivity extends BaseActivity {
                 })
                 .setNegativeButton("No", null) // No hacer nada si el usuario cancela
                 .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Apagar el executorService para liberar recursos
+        executorService.shutdown();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadProfileData();
     }
 }
 

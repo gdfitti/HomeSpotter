@@ -74,8 +74,8 @@ public class LoginActivity extends BaseActivity {
         Cursor cursor = usuarios.buscar(filters);
 
         if (cursor != null && cursor.moveToFirst()) {
-            int userId = cursor.getInt(cursor.getColumnIndex("id_usuario"));
-            String savedUsername = cursor.getString(cursor.getColumnIndex("nombre_usuario"));
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id_usuario"));
+            String savedUsername = cursor.getString(cursor.getColumnIndexOrThrow("nombre_usuario"));
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(USER_ID_KEY, userId);

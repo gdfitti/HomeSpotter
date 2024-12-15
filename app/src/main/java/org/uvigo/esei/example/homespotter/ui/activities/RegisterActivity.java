@@ -1,9 +1,11 @@
 package org.uvigo.esei.example.homespotter.ui.activities;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.uvigo.esei.example.homespotter.R;
@@ -57,24 +60,49 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         contact = findViewById(R.id.contact);
+        Button cancelBtn = findViewById(R.id.btn_cancel);
         Button btnRegister = findViewById(R.id.btn_register);
 
         // Configurar el botón de registro
-        btnRegister.setOnClickListener(v -> {
-            String name = fullName.getText().toString().trim();
-            String username = userName.getText().toString().trim();
-            String userEmail = email.getText().toString().trim();
-            String userPassword = password.getText().toString().trim();
-            String userContact = contact.getText().toString().trim();
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = fullName.getText().toString().trim();
+                String username = userName.getText().toString().trim();
+                String userEmail = email.getText().toString().trim();
+                String userPassword = password.getText().toString().trim();
+                String userContact = contact.getText().toString().trim();
 
-            if (validateInputs(name, username, userEmail, userPassword)) {
-                if (selectedImageUri != null) {
-                    subirImagenAImgBB(name, username, userEmail, userPassword, userContact);
-                } else {
-                    Toast.makeText(this, "Selecciona una imagen para continuar", Toast.LENGTH_SHORT).show();
+                if (validateInputs(name, username, userEmail, userPassword)) {
+                    if (selectedImageUri != null) {
+                        subirImagenAImgBB(name, username, userEmail, userPassword, userContact);
+                    } else {
+                        registrarUsuario(name, username, userEmail, userPassword,null, userContact);
+                    }
                 }
             }
         });
+
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showCancelDialog();
+                    }
+                });
+    }
+
+    private void showCancelDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(this.getString(R.string.cancel))
+                .setMessage(this.getString(R.string.sure_cancel));
+        builder.setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setNegativeButton(this.getString(R.string.no),null);
+        builder.create().show();
     }
 
     private void manejarSeleccionImagen(Uri uri) {
@@ -97,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             imageUploader.uploadImage(file.getAbsolutePath(), new ImageUploader.UploadCallback() {
                 @Override
-                public void onSuccess(String imageUrl) {
+                public void onSuccess(String imageUrl, String deleteUrl) {
                     // Guardar el enlace generado por ImgBB en la base de datos
                     registrarUsuario(name, username, email, password, imageUrl, contact);
                 }

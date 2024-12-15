@@ -1,7 +1,7 @@
 <resources>
 
     <!-- activity_main -->
-    <string name="app_name">HomeSpotter</string>
+    <string name="app_name">🏡 HomeSpotter</string>
     <string name="slogan">Find your ideal home quickly and easily.</string>
     <string name="appDesc">With HomeSpotter, exploring, comparing, and choosing the perfect property has never been easier.
                            Our platform allows you to access the best available properties and manage them according to your preferences.
@@ -74,6 +74,15 @@
 
     <string name="show_password_checkbox">Show Password</string>
     <string name="modify_profile_text">Save Profile</string>
+    <string name="thanks">Thanks for Using our App!</string>
+
+    <string name="confirm_modifications">Save Changes</string>
+    <string name="modifications_message">Are you sure you want to save your changes to your profile?</string>
+    <string name="fill">Please, fill all the fields</string>
+    <string name="profile_updated">Profile updated correctly</string>
+    <string name="error_profile_update">Error updating the profile</string>
+    <string name="error_profile_charging">Profile data could not be uploaded</string>
+    <string name="replace_photo">Replace Photo</string>
 
     <string name="welcome_app">¡Welcome New User!</string>
     <string name="welcome_again_app">¡Welcome Back!</string>
@@ -87,6 +96,11 @@
 
     <string name="register">Register</string>
     <string name="user_not_logged">Error, Login To Like</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="register_now">Not registered yet? Do it now!</string>
 
     <string-array name="property_types">
         <item>House</item>

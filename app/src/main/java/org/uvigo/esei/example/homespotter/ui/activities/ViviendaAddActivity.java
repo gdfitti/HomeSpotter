@@ -1,5 +1,6 @@
 package org.uvigo.esei.example.homespotter.ui.activities;
 
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,7 +104,12 @@ public class ViviendaAddActivity extends AppCompatActivity {
 
         // Botón para añadir fotos
         Button addPhotosButton = findViewById(R.id.btn_add_photos);
-        addPhotosButton.setOnClickListener(v -> photoPickerLauncher.launch(new String[]{"image/*"}));
+        addPhotosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                photoPickerLauncher.launch(new String[]{"image/*"});
+            }
+        });
 
         // Botón para guardar la vivienda
         Button saveButton = findViewById(R.id.btn_save_property);
@@ -146,7 +153,22 @@ public class ViviendaAddActivity extends AppCompatActivity {
 
         // Botón para cancelar
         Button cancelButton = findViewById(R.id.btn_cancel);
-        cancelButton.setOnClickListener(v -> finish());
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViviendaAddActivity.this);
+                builder.setTitle(ViviendaAddActivity.this.getString(R.string.cancel))
+                        .setMessage(ViviendaAddActivity.this.getString(R.string.sure_cancel))
+                        .setPositiveButton(ViviendaAddActivity.this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton(ViviendaAddActivity.this.getString(R.string.no), null);
+                builder.create().show();
+            }
+        });
     }
 
     private void uploadPhotosToImgBB(int viviendaId, Runnable onComplete) {
@@ -163,7 +185,7 @@ public class ViviendaAddActivity extends AppCompatActivity {
                 File file = getFileFromUri(uri);
                 imageUploader.uploadImage(file.getAbsolutePath(), new ImageUploader.UploadCallback() {
                     @Override
-                    public void onSuccess(String imageUrl) {
+                    public void onSuccess(String imageUrl, String deleteUrl) {
                         fotosEntity.insertar(viviendaId, imageUrl); // Guarda el enlace en la base de datos
                         fotosSubidas[0]++;
 

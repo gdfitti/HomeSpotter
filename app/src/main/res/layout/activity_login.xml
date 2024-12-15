@@ -61,22 +61,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Aún no estas registrado? Hazlo ahora"
+            android:text="@string/register_now"
             android:textSize="14sp"
             android:textAlignment="center"
             android:id="@+id/signupText"
             android:layout_marginBottom="20dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:padding="16dp">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_back_to_home"
-            android:text="volver" />
     </LinearLayout>
 </LinearLayout>

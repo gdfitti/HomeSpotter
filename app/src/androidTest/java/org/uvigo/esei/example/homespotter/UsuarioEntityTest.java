@@ -50,7 +50,7 @@ public class UsuarioEntityTest {
 
     @Test
     public void testInsertarUsuario_Completado() {
-        ContentValues values = usuarioEntity.getContentValues("Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
+        ContentValues values = usuarioEntity.getContentValues("juanpe", "Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
         UsuarioEntity.insertUsuarioEstado resultado = usuarioEntity.insertar(values);
         assertEquals("El estado debería ser COMPLETADO.", UsuarioEntity.insertUsuarioEstado.COMPLETADO, resultado);
 
@@ -69,7 +69,7 @@ public class UsuarioEntityTest {
     @Test
     public void testInsertarUsuario_UsuarioExistente() {
         // Insertar el usuario por primera vez
-        ContentValues values = usuarioEntity.getContentValues("Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
+        ContentValues values = usuarioEntity.getContentValues("juanpe","Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
         usuarioEntity.insertar(values);
 
         // Intentar insertar nuevamente el mismo usuario
@@ -80,17 +80,17 @@ public class UsuarioEntityTest {
     @Test
     public void testInsertarUsuario_Error() {
         // Intentar insertar un usuario con un email nulo (simulación de error)
-        ContentValues values = usuarioEntity.getContentValues("Juan Pérez", null, "password123", "foto.jpg", "123456789");
+        ContentValues values = usuarioEntity.getContentValues("juanpe","Juan Pérez", null, "password123", "foto.jpg", "123456789");
         UsuarioEntity.insertUsuarioEstado resultado = usuarioEntity.insertar(values);
         assertEquals("El estado debería ser ERROR.", UsuarioEntity.insertUsuarioEstado.ERROR, resultado);
     }
 
     @Test
     public void testModificarUsuario() {
-        ContentValues values = usuarioEntity.getContentValues("Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
+        ContentValues values = usuarioEntity.getContentValues("juanpe","Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
         usuarioEntity.insertar(values);
 
-        boolean actualizado = usuarioEntity.modificar(1, "Juan Actualizado", "juan_new@example.com", null, null, null);
+        boolean actualizado = usuarioEntity.modificar(1, "juanpe","Juan Actualizado", "juan_new@example.com", null, null, null);
         assertTrue("El usuario debería haberse actualizado.", actualizado);
 
         Cursor cursor = db.query(
@@ -107,7 +107,7 @@ public class UsuarioEntityTest {
 
     @Test
     public void testEliminarUsuario() {
-        ContentValues values = usuarioEntity.getContentValues("Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
+        ContentValues values = usuarioEntity.getContentValues("juanpe","Juan Pérez", "juan@example.com", "password123", "foto.jpg", "123456789");
         usuarioEntity.insertar(values);
 
         boolean eliminado = usuarioEntity.eliminar(1);

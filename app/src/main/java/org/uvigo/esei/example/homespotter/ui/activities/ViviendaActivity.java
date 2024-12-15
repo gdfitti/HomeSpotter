@@ -174,17 +174,16 @@ public class ViviendaActivity extends BaseActivity {
                 }
 
                 // Aplicar los filtros solo si hay datos válidos
-                if (buscar) {
-                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                    if (fragment instanceof ViviendasFragment) {
-                        ((ViviendasFragment) fragment).applyFilters(filtros, minPrice, maxPrice);
-                    }
+
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (buscar && fragment instanceof ViviendasFragment) {
+                    ((ViviendasFragment) fragment).applyFilters(filtros, minPrice, maxPrice);
                 } else {
-                    Toast.makeText(ViviendaActivity.this, "Por favor, rellena al menos un campo para aplicar filtros.", Toast.LENGTH_SHORT).show();
+                    ((ViviendasFragment) fragment).cargarPropiedades();
                 }
             }
         });
-        builder.setNegativeButton(this.getString(R.string.sure_cancel), null);
+        builder.setNegativeButton(this.getString(R.string.cancel), null);
         builder.create().show();
     }
 
