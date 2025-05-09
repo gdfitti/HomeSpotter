@@ -1,0 +1,2 @@
+HomeSpotter is an Android mobile application designed to help users search for housing. It allows users to browse available rental or sale properties based on filters such as location, price, number of rooms, and amenities. The app offers real-time map integration, detailed listings with photos and descriptions, and the ability to save favorites or contact property owners directly. HomeSpotter aims to simplify the home search experience by combining convenience, accuracy, and user-friendly navigation.
+
